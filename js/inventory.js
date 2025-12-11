@@ -106,38 +106,62 @@ function renderProducts(productsToDisplay) {
 }
 
 
-function filterProducts() {
-    const checkboxes = Array.from(document.querySelectorAll('.filter-checkbox:checked'));
+async function filterProducts() {
+    // 1. Hole alle Checkboxen
+    const checkboxes = document.querySelectorAll('.filter-checkbox:checked');
     
+    // 2. Wenn keine Filter aktiv sind, zeige alle Produkte (nach dem Mischen)
     if (checkboxes.length === 0) {
-        // Shuffle and render all products if no filters are active
+        // Randomly shuffle products for a "New/Random Products" feel
         const shuffledProducts = [...products].sort(() => 0.5 - Math.random());
         renderProducts(shuffledProducts);
+        // Stelle sicher, dass der Zähler aktualisiert wird
+        const countHeader = document.getElementById('products-count-header');
+        if (countHeader) {
+            // Dies ist der Fall ohne Filter. Wir zeigen alle Produkte an.
+            countHeader.textContent = `${translations[currentLang]['products-count-header'].replace('(0)', '')} (${products.length})`;
+        }
         return;
     }
 
+    // 3. Fülle das Objekt mit allen aktiven Filterwerten
     const activeFilters = { brand: [], gender: [], condition: [], category: [] }; 
     checkboxes.forEach(checkbox => activeFilters[checkbox.name].push(checkbox.value));
 
+    // 4. Filtere das Hauptprodukt-Array
     const filteredProducts = products.filter(product => {
-        const brandMatch = activeFilters.brand.length === 0 || activeFilters.brand.includes(products.brand);
-        const genderMatch = activeFilters.gender.length === 0 || activeFilters.gender.includes(products.gender);
-        const conditionMatch = activeFilters.condition.length === 0 || activeFilters.condition.includes(products.condition);
-        const categoryMatch = activeFilters.category.length === 0 || activeFilters.category.includes(products.category); 
+        
+        // KORREKTUR DER FILTER-LOGIK: Prüfe, ob die Eigenschaft des E-I-N-Z-E-L-N-E-N Produkts
+        // in der Liste der ausgewählten Filter enthalten ist.
+        
+        // Brand Match: Prüft, ob product.brand in der Liste der aktiven Marken ist
+        const brandMatch = activeFilters.brand.length === 0 || activeFilters.brand.includes(product.brand);
+        
+        // Gender Match: Prüft, ob product.gender in der Liste der aktiven Geschlechter ist
+        const genderMatch = activeFilters.gender.length === 0 || activeFilters.gender.includes(product.gender);
+        
+        // Condition Match: Prüft, ob product.condition in der Liste der aktiven Zustände ist
+        const conditionMatch = activeFilters.condition.length === 0 || activeFilters.condition.includes(product.condition);
+        
+        // Category Match: Prüft, ob product.category in der Liste der aktiven Kategorien ist
+        const categoryMatch = activeFilters.category.length === 0 || activeFilters.category.includes(product.category); 
 
+        // Das Produkt muss ALLE aktiven Filter erfüllen (AND-Logik)
         return brandMatch && genderMatch && conditionMatch && categoryMatch;
     });
     
+    // 5. Zeige die gefilterten Produkte an
     renderProducts(filteredProducts);
 
-        const countHeader = document.getElementById('products-count-header');
+    // 6. Aktualisiere den Zähler-Header
+    const countHeader = document.getElementById('products-count-header');
     if (countHeader) {
-        const translationKey = activeFilters.brand.length > 0 || activeFilters.gender.length > 0 || activeFilters.condition.length > 0 || activeFilters.category.length > 0 
-            ? 'products-count-header-filtered' : 'products-count-header';
+        // Wir verwenden den gefilterten Header-Text, da Filter aktiv sind
+        const translationKey = 'products-count-header-filtered'; 
         
-        // Update translation text
         const t = translations[currentLang];
-        const baseText = t[translationKey] || "Showing Products";
+        const baseText = t[translationKey] || "Showing Filtered Products";
         countHeader.textContent = `${baseText} (${filteredProducts.length})`;
-            }
+    }
 }
+
