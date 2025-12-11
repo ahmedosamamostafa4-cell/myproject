@@ -582,56 +582,57 @@ order: 1; /* Force Filters into the second column (200px) */
     /* Sicherstellen, dass der Content unter dem angepassten Header beginnt */
     /*----------------------------------------------------*/
     #hero-section {
-        /* USE A FIXED VH VALUE AGAIN (e.g., 55% of screen height) */
-        /* This prevents the section from collapsing to height: 0 */
-        height: 55vh !important; 
-        
-        /* Reset any conflicting height rules */
-        min-height: auto;
-        max-height: none; 
-        
-        margin-top: var(--header-stack-height);
+        /* Set a reliable, visible height: 50% of screen height */
+        height: 50vh !important; 
+        min-height: 50vh !important; /* Ensure it stays at least this tall */
+        max-height: 50vh !important; 
         overflow: hidden; 
+        margin-top: var(--header-stack-height);
     }
     
-    /* 2. Target the individual slides */
+    /* 2. Individual Slide Container */
     .slide {
-        /* Ensure the slide fills the 55vh container */
-        height: 100%; 
-        width: 100vw; /* Crucial: Ensure the slide is always full screen width */
+        /* Must fill the container */
+        height: 100% !important; 
+        width: 100vw !important; 
     }
     
-    /* 3. Target the image within the slide */
-    .slide img {
-        /* This is the key to showing the full image content */
-        object-fit: contain !important; /* Forces the entire photo to be visible (no cropping) */
+    /* 3. Image Element (ABSOLUTE OVERRIDE) */
+    /* This MUST win the conflict to show the full image */
+    #hero-section .slide img {
+        /* This forces the entire photo to be visible (NO CROPPING) */
+        object-fit: contain !important; 
         
-        /* Ensure the image scales correctly within the slide */
-        height: 100% !important; 
-        width: 100%;
+        /* Ensure the image scales freely within the 'contain' rule */
+        height: 100% !important; /* Take up 100% of the container height */
+        width: 100% !important; /* Take up 100% of the container width */
+        
+        /* Add a secondary property just in case an inheritance issue exists */
+        max-width: 100% !important; 
+        max-height: 100% !important;
     }
     
     /* 4. Text and button placement adjustments */
     .slide-content {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); 
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important; 
         text-align: center;
         width: 80%; 
     }
     
     .slide-content h2 {
-        font-size: 1.4rem; 
+        font-size: 1.3rem !important; 
     }
 
     .slide-content p {
-        font-size: 0.85rem; 
-        margin-bottom: 10px;
+        font-size: 0.8rem !important; 
+        margin-bottom: 8px;
     }
     
     .shop-now-btn {
-        padding: 7px 14px; 
-        font-size: 0.85rem;
+        padding: 6px 12px; 
+        font-size: 0.8rem;
     }
     /*---------------------------------*/
     /* Padding an den Fixed Headern reduzieren */
@@ -705,6 +706,7 @@ order: 1; /* Force Filters into the second column (200px) */
 [dir="rtl"] body.menu-active #off-canvas-menu {
     transform: translateX(-280px); 
 }
+
 
 
 
