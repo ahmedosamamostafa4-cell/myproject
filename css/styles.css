@@ -580,10 +580,59 @@ order: 1; /* Force Filters into the second column (200px) */
     }
     
     /* Sicherstellen, dass der Content unter dem angepassten Header beginnt */
+    /*----------------------------------------------------*/
     #hero-section {
-         margin-top: var(--header-stack-height);
+        /* Set a MINIMUM height (e.g., 40% of the screen height) */
+        min-height: 40vh; 
+        /* Allow the section to grow taller if needed to fit the image */
+        height: auto !important; /* Force height to be determined by content, not 50vh */
+        max-height: 65vh; /* Prevent it from becoming too large */
+        
+        margin-top: var(--header-stack-height);
+        overflow: hidden; /* Hide any overflow */
     }
     
+    /* 2. Target the individual slides */
+    .slide {
+        /* Allow the slide to fill its container */
+        min-height: 40vh; 
+        height: 100%; 
+    }
+    
+    /* 3. Target the image within the slide */
+    .slide img {
+        /* This is the definitive fix to show the whole photo */
+        object-fit: contain !important; /* Forces the entire photo to be visible (no cropping) */
+        
+        /* Ensure the image scales vertically within the slide */
+        height: auto !important; 
+        max-height: 60vh; /* Prevents image from getting excessively tall */
+        width: 100%;
+    }
+    
+    /* 4. Adjust the text and button placement for mobile */
+    .slide-content {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); 
+        text-align: center;
+        width: 80%; 
+    }
+    
+    .slide-content h2 {
+        font-size: 1.3rem; 
+    }
+
+    .slide-content p {
+        font-size: 0.8rem; 
+        margin-bottom: 8px;
+    }
+    
+    .shop-now-btn {
+        padding: 6px 12px; 
+        font-size: 0.8rem;
+    }
+    /*---------------------------------*/
     /* Padding an den Fixed Headern reduzieren */
     #oil-color-bar, 
     #floating-header {
@@ -640,12 +689,6 @@ order: 1; /* Force Filters into the second column (200px) */
     body.menu-active #off-canvas-menu {
         transform: translateX(280px); 
     }
-.slide img {
-        height: 100%; 
-        width: 100%;
-        /* CHANGE to 'contain' to ensure the entire image is visible (no cropping) */
-        object-fit: contain; 
-    }
 }
 
 /* --- RTL Mobile Fixes für das neue Layout --- */
@@ -661,6 +704,7 @@ order: 1; /* Force Filters into the second column (200px) */
 [dir="rtl"] body.menu-active #off-canvas-menu {
     transform: translateX(-280px); 
 }
+
 
 
 
