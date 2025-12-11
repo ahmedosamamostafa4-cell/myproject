@@ -608,20 +608,6 @@ order: 1; /* Force Filters into the second column (200px) */
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    /* PRODUKTKARTEN FIX: Einzelkarte */
-    .product-card {
-        max-width: 100%;
-    }
-    
-    /* FIX: Höhe des BILDES in der Produktkarte anpassen */
-    .product-card img {
-        /* Die Höhe des Bildes für mobile Ansicht reduzieren */
-        height: 180px; /* Reduziert von den ursprünglichen 250px */
-        
-        /* Sicherstellen, dass das Bild die Box gut ausfüllt */
-        object-fit: cover; 
-        width: 100%;
-    }
     /* CONTEXTUAL FILTER SIDEBAR (#product-filters-contextual) */
     #product-filters-contextual {
         position: static; /* Sticky-Verhalten entfernen */
@@ -654,6 +640,12 @@ order: 1; /* Force Filters into the second column (200px) */
     body.menu-active #off-canvas-menu {
         transform: translateX(280px); 
     }
+.slide img {
+        height: 100%; 
+        width: 100%;
+        /* CHANGE to 'contain' to ensure the entire image is visible (no cropping) */
+        object-fit: contain; 
+    }
 }
 
 /* --- RTL Mobile Fixes für das neue Layout --- */
@@ -669,5 +661,6 @@ order: 1; /* Force Filters into the second column (200px) */
 [dir="rtl"] body.menu-active #off-canvas-menu {
     transform: translateX(-280px); 
 }
+
 
 
