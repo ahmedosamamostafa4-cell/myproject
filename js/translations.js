@@ -2,7 +2,7 @@
 const translations = {
     en: {
         "page-title": "OriginalShoes - Home",
-        "brand": "Moaz Store",
+        "brand": "Original Kicks",
         "welcome": "Welcome!",
         "slogan-header": "Discover our world of original footwear",
         "menu-title": "Main Menu", 
