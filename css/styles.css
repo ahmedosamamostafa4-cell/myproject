@@ -1,0 +1,564 @@
+/* --- Root Variables are defined here for simplicity, although they could be in a separate _variables.css file --- */
+:root {
+    --primary-color: #ff4500; /* Orange Accent */
+    --secondary-color: #333; /* Dark Text */
+    --oil-color-dark: #384236; /* Dark Olive Green */
+    --content-bg: #f7f7f7; /* Light background for content area */
+    --nav-bg: white;
+    /* Define specific heights for calculation */
+    --oil-bar-height: 38px;
+    --main-header-height: 50px;
+    --header-stack-height: 88px; /* Combined height (38px + 50px) */
+    /* Menu specific properties */
+    --menu-width: 300px;
+    --menu-z-index: 10000;
+}
+/* --- 0. BASE STYLING --- */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--content-bg);
+    color: var(--secondary-color);
+    transition: all 0.3s;
+}
+
+/* State for when the menu is active (locks scroll and darkens background) */
+body.menu-active {
+    overflow: hidden; /* Prevent scrolling when menu is open */
+}
+
+body.menu-active .product-section {
+    filter: blur(2px);
+    pointer-events: none;
+}
+/* Hide the main sidebars when the off-canvas menu is open, especially on smaller screens */
+body.menu-active .sidebar,
+body.menu-active #product-filters-contextual {
+    visibility: hidden;
+    opacity: 0;
+}
+
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+
+/* --- 1. SLIM OIL COLOR BAR (FIXED) --- */
+#oil-color-bar {
+    background-color: var(--oil-color-dark);
+    color: white;
+    padding: 5px 40px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    width: 100%;
+    box-sizing: border-box; 
+    position: fixed;
+    top: 0;
+    height: var(--oil-bar-height); 
+    z-index: 1001; 
+    transition: opacity 0.3s, visibility 0.3s;
+}
+/* State for when the oil bar is hidden */
+#oil-color-bar.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+#lang-toggle-bar {
+    cursor: pointer;
+    font-size: 1.1em;
+    padding: 5px;
+    color: white; /* Inherits from the oil bar, but ensures it's explicit */
+    transition: opacity 0.2s;
+}
+#lang-toggle-bar:hover {
+    opacity: 0.8;
+}
+#oil-color-bar .slogan-text { flex-grow: 1; text-align: center; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+#oil-color-bar .bar-side-content { width: 100px; display: flex; align-items: center; }
+#oil-color-bar .welcome-right { justify-content: flex-end; gap: 10px; }
+
+.welcome-right span, .welcome-right i {
+    color: var(--primary-color);
+}
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+
+
+/* --- 2. FLOATING FIXED HEADER (PERMANENT GLASS EFFECT) --- */
+#floating-header {
+    position: fixed;
+    top: var(--oil-bar-height); 
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 40px; 
+    z-index: 1000; 
+    color: var(--secondary-color); 
+    height: var(--main-header-height); 
+    box-sizing: border-box; 
+    
+    /* PERMANENT GLASS EFFECT */
+    background-color: rgba(255, 255, 255, 0.5); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); 
+    
+    transition: all 0.3s;
+}
+
+/* State for when the oil bar is hidden (main header moves up) */
+#floating-header.lowered {
+    top: 0; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.65);
+}
+
+/* Simplified utility sections */
+#left-util, #right-util { width: 100px; display: flex; align-items: center; gap: 15px; }
+#left-util { justify-content: flex-start; }
+#right-util { justify-content: flex-end; }
+#floating-header h1 { flex-grow: 1; text-align: center; font-size: 1.8em; font-weight: bold; margin: 0; }
+#floating-header i { cursor: pointer; font-size: 1.2em; padding: 5px; }
+#floating-header i:hover { opacity: 0.7; }
+
+/* --- 2.1 OFF-CANVAS MENU STYLING --- */
+#menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: calc(var(--menu-z-index) - 1);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+body.menu-active #menu-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+#off-canvas-menu {
+    position: fixed;
+    top: 0;
+    left: calc(-1 * var(--menu-width)); /* Start off-screen */
+    width: var(--menu-width);
+    height: 100%;
+    background-color: white;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+    z-index: var(--menu-z-index);
+    transition: transform 0.3s ease-in-out;
+    padding: 20px 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+body.menu-active #off-canvas-menu {
+    transform: translateX(var(--menu-width)); /* Slide into view */
+}
+
+#menu-close-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 10px 20px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+#menu-close-header h3 {
+    margin: 0;
+    font-size: 1.5em;
+    color: var(--secondary-color);
+}
+
+.menu-nav-link {
+    display: block;
+    padding: 15px 20px;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    border-radius: 8px;
+    margin: 5px 10px;
+    transition: color 0.2s, background-color 0.2s, transform 0.1s;
+}
+.menu-nav-link:hover {
+    color: white;
+    background-color: var(--primary-color);
+    transform: translateX(5px);
+}
+
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+
+/* --- 3. HERO SLIDER SECTION --- */
+#hero-section {
+    width: 100%;
+    /* Push content down by combined fixed header height (88px) */
+    margin-top: var(--header-stack-height); 
+    height: calc(100vh - var(--header-stack-height)); 
+    position: relative;
+    overflow: hidden;
+}
+#slider-strip {
+    display: flex;
+    height: 100%;
+    transition: transform 1s ease-in-out;
+    will-change: transform;
+}
+.slide { flex: 0 0 100%; height: 100%; display: flex; }
+.slide-half { width: 50%; height: 100%; background-size: cover; background-position: center; }
+
+
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+
+
+/* --- 4. MAIN CONTENT LAYOUT (Desktop Grid Setup - Fixed) --- */
+#content-wrapper {
+    max-width: 1400px; 
+    margin: 40px auto 50px auto;
+    padding: 0 20px;
+    display: grid;
+    /* Outer grid: Nav Sidebar (250px) | Product Area (1fr) */
+    grid-template-columns: 250px 1fr;
+    gap: 30px;
+}
+
+/* Navigation Sidebar (Far Left - 250px) */
+.sidebar {
+    padding: 20px 0; 
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    align-self: flex-start; 
+    position: sticky; /* Sticky navigation */
+    top: calc(var(--header-stack-height) + 10px); 
+    max-height: calc(100vh - 108px);
+    overflow-y: auto; /* Enable scroll if content is too long */
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+    transition: opacity 0.3s, visibility 0.3s; /* Transition added for menu closing */
+}
+.sidebar::-webkit-scrollbar { width: 0; }
+
+/* Sidebar Link Styles */
+.sidebar-nav-link {
+    display: block;
+    padding: 12px 20px;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 1.05em;
+    font-weight: 600;
+    transition: color 0.2s, background-color 0.2s;
+}
+.sidebar-nav-link:hover {
+    color: white;
+    background-color: var(--primary-color);
+}
+.sidebar-divider { margin: 20px 20px; border: none; border-top: 1px solid #eee; }
+.social-links-sidebar {
+    display: flex;
+    gap: 25px;
+    padding: 0 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.social-links-sidebar i {
+    font-size: 1.5em;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.social-links-sidebar i:hover {
+    color: var(--primary-color);
+}
+
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+
+/* --- MAIN PRODUCT SECTION (NESTED GRID) --- */
+.product-section {
+    /* Inner grid: Filters (200px) | Products (1fr) */
+    display: grid;
+    grid-template-columns: 200px 1fr; 
+    gap: 30px; 
+    min-height: 80vh; 
+}
+
+/* CONTEXTUAL FILTER SIDEBAR (200px wide) */
+#product-filters-contextual {
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    align-self: flex-start; 
+    position: sticky; /* Sticky filters on scroll */
+    top: calc(var(--header-stack-height) + 10px); 
+    max-height: calc(100vh - 108px);
+    overflow-y: auto;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+    transition: opacity 0.3s, visibility 0.3s; /* Transition added for menu closing */
+}
+#product-filters-contextual::-webkit-scrollbar { width: 0; }
+
+/* Filter Header Style */
+#product-filters-contextual > h2 {
+    font-size: 1.5em;
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.filter-group-contextual { margin-bottom: 20px; }
+.filter-group-contextual h3 { 
+    font-size: 1.1em; 
+    margin-top: 0; 
+    color: var(--primary-color); 
+    border-bottom: 2px solid #f0f0f0; 
+    padding-bottom: 5px; 
+    margin-bottom: 10px;
+}
+.filter-option { display: flex; align-items: center; margin-bottom: 5px; }
+.filter-option label { margin-left: 8px; cursor: pointer; font-size: 0.95em; }
+
+/* Product Display Area (Right column of the inner grid) */
+#product-display-area h2 { 
+    border-bottom: 3px solid var(--primary-color); 
+    padding-bottom: 10px; 
+    margin-bottom: 25px; 
+    font-size: 1.8em;
+}
+#product-results {
+    display: grid;
+    /* CHANGE HERE: Explicitly set 3 columns of equal width */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+    padding-bottom: 50px;
+}
+
+/* Product Card Styling (omitted for brevity, assume unchanged) */
+.product-card {
+    background-color: white; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;
+}
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15); }
+.product-card img { width: 100%; height: 250px; object-fit: cover; border-bottom: 1px solid #eee; }
+.product-details { padding: 15px; text-align: center; }
+.product-details h4 { font-size: 1em; margin-top: 0; margin-bottom: 5px; color: var(--secondary-color); }
+.product-details .meta-data { margin: 5px 0; font-size: 0.9em; color: #777; }
+.product-details .price { font-size: 1.1em; font-weight: 700; color: var(--primary-color); }
+
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+/* 5.0 Styles for the new cart icon container and badge */
+.cart-icon-container {
+    position: relative;
+    cursor: pointer;
+    font-size: 1.5rem; /* Match other utility links */
+    display: flex; /* Helps center the icon */
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px; /* Give it some space */
+}
+
+.cart-icon-container:hover {
+    color: var(--primary-color); /* Apply hover color */
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px; /* Adjust vertical position */
+    right: -10px; /* Adjust horizontal position */
+    background-color: var(--primary-color); /* Orange color */
+    color: white;
+    border-radius: 50%;
+    padding: 1px 6px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+    transition: transform 0.2s ease-out; /* For the bounce effect */
+}
+
+/* --- Checkout Modal Styles (from original css/cart-styles.css snippet) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none; /* Prevents interaction when hidden */
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* This class shows the modal */
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background-color: rgb(193, 220, 170);
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Animation for the modal content sliding in */
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.item-details-row {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#alert-message-box {
+    /* Assuming default LTR position is bottom: X; right: Y; */
+    
+    /* Swap from RIGHT to LEFT */
+    left: auto; /* Set a left margin */
+    right: 20px; /* Remove the right anchor */
+}
+/*-------------------------------------------------------------*/
+
+/* --- CONTACT MODAL STYLES (UNIQUE CLASSES) --- */
+
+/* 1. New OVERLAY Class */
+.contact-modal-overlay {
+    /* Positioning and Size: Makes it fixed and full-screen */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Appearance and Layering */
+    background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+    z-index: 10001; /* Must be high to cover everything, including the side menu */
+
+    /* Centering the content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 2. New CONTENT Class */
+.contact-modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px; /* Max width for large screens */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    position: relative;
+    text-align: center;
+    animation: fadeIn 0.3s ease-out; 
+}
+
+/* 3. Keep .close-btn and @keyframes fadeIn as they are */
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    /* ... rest of close-btn styles ... */
+}
+/* ... @keyframes fadeIn ... */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+/*-----------------------------------------------RTL----------------------------------------------------------*/
+/*-----------------------------------------------RTL----------------------------------------------------------*/
+/*-----------------------------------------------RTL----------------------------------------------------------*/
+/*-----------------------------------------------RTL----------------------------------------------------------*/
+/* --- Right To Left Overrides when it comes to ARABIC --- */
+[dir="rtl"] { text-align: right; }
+[dir="rtl"] #oil-color-bar { flex-direction: row-reverse; }
+[dir="rtl"] .welcome-right { justify-content: flex-start; }
+[dir="rtl"] #floating-header { flex-direction: row; }
+[dir="rtl"] #left-util { justify-content: flex-end; }
+[dir="rtl"] #right-util { justify-content: flex-start;}
+[dir="rtl"] .product-section { grid-template-columns: 1fr 200px; } /* Flip inner grid for RTL */
+[dir="rtl"] .filter-option label { margin-left: 0; margin-right: 8px; }
+[dir="rtl"] .social-links-sidebar { justify-content: flex-end; padding: 0 20px; }
+[dir="rtl"] #alert-message-box {
+    left: 20px; /* Set a left margin */
+    right: auto; /* Remove the right anchor */
+}
+/* RTL Off-Canvas Menu Overrides */
+[dir="rtl"] #off-canvas-menu {
+    left: auto; /* Disable LTR positioning */
+    right: calc(-1 * var(--menu-width)); /* Start off-screen right */
+}
+
+[dir="rtl"] body.menu-active #off-canvas-menu {
+    transform: translateX(calc(-1 * var(--menu-width))); /* Slide into view from right */
+}
+/* --- RTL Overrides --- */
+[dir="rtl"] { text-align: right; }
+/* ... existing RTL styles ... */
+
+/* FIX: Explicitly set the order of items for RTL to match the 1fr 200px sizes */
+[dir="rtl"] #product-display-area {
+order: 2; /* Force Products into the first column (1fr) */
+}
+[dir="rtl"] #product-filters-contextual {
+order: 1; /* Force Filters into the second column (200px) */
+}
+
+[dir="rtl"] .product-section { grid-template-columns: 200px 1fr; } /* This line is correct for size */
+
+/* --- SLIDER RTL FLIP FIX --- */
+[dir="rtl"] .contact-modal-content {
+    /* This reverses the flip inherited from a higher-level element */
+    transform: scaleX(1);
+    /* Ensure the text direction inside the modal is LTR for numbers */
+    direction: ltr;
+}
+
+/* 2. Re-flip the Icons inside the modal */
+/* Because the container was flipped back, the icons are now backward again, 
+   so we flip them one more time (even number of flips = correct orientation) */
+[dir="rtl"] .contact-modal-content i {
+    transform: scaleX(1);
+}
