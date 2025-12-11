@@ -566,50 +566,94 @@ order: 1; /* Force Filters into the second column (200px) */
 
 
 
-/* ============================================== */
-/* === RESPONSIVE DESIGN: HANDY / TABLET LAYOUT === */
-/* ============================================== */
+/* ================================================= */
+/* === RESPONSIVE DESIGN: MOBILE LAYOUT FIX (GRID) === */
+/* ================================================= */
 
 @media screen and (max-width: 768px) {
     
-    /* 1. Haupt-Container (Filter & Produkte) */
-    .content {
-        /* Ändert die Anordnung von 'nebeneinander' (row) zu 'untereinander' (column) */
-        flex-direction: column; 
+    /* --- 0. Anpassung der Root Variablen (um vertikalen Platz zu sparen) --- */
+    :root {
+         /* Öl-Bar und Header-Höhe etwas reduzieren */
+         --oil-bar-height: 35px; 
+         --header-stack-height: 85px; 
     }
     
-    /* 2. Die Filter-Sidebar */
-    .filter-sidebar {
-        /* Die Sidebar soll auf dem Handy die volle Breite einnehmen */
-        width: 100%;
-        /* Oben an den Bildschirmrand schieben */
-        order: -1; 
-        padding: 15px; /* Etwas Luft hinzufügen */
-        
-        /* WICHTIGE ÄNDERUNG für Handys: */
-        /* Wir blenden die Filter vorerst aus, da sie viel Platz wegnehmen. 
-           Besser ist eine Hamburger-Menü-Lösung, aber das ist ein guter Start. 
-           (Du kannst die Zeile später entfernen, um sie sichtbar zu lassen) */
-        /* display: none; */ 
+    /* Sicherstellen, dass der Content unter dem angepassten Header beginnt */
+    #hero-section {
+         margin-top: var(--header-stack-height);
     }
     
-    /* 3. Der Container für die Produkte */
-    .products-container {
-        /* Auch der Produktbereich soll die volle Breite einnehmen */
-        width: 100%;
-        /* Den Abstand zum Filter-Bereich oben oder unten regeln */
-        padding: 0 15px;
+    /* Padding an den Fixed Headern reduzieren */
+    #oil-color-bar, 
+    #floating-header {
+        padding: 5px 10px;
     }
     
-    /* 4. Einzelne Produktkarten (Random Products) */
+    /* 1. ÄUSSERER CONTENT WRAPPER (#content-wrapper) */
+    #content-wrapper {
+        /* Bricht die Hauptstruktur (Nav Sidebar | Product Area) auf EINE Spalte um */
+        grid-template-columns: 1fr; 
+        padding: 0 10px; /* Seiten-Padding für Mobil reduzieren */
+    }
+
+    /* Die far-left Navigation Sidebar (.sidebar) auf Handys ausblenden, um Platz zu sparen */
+    .sidebar {
+        display: none; 
+    }
+
+    /* 2. INNERE PRODUKT SECTION (.product-section) */
+    .product-section {
+        /* Bricht die innere Struktur (Filters | Products) auf EINE Spalte um */
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    /* CONTEXTUAL FILTER SIDEBAR (#product-filters-contextual) */
+    #product-filters-contextual {
+        position: static; /* Sticky-Verhalten entfernen */
+        max-height: none;
+        width: auto; 
+        order: -1; /* Filter an den Anfang der Sektion verschieben (über die Produkte) */
+        padding: 15px; 
+    }
+    
+    /* 3. PRODUKTKARTEN GRID (#product-results) */
+    #product-results {
+        /* Ändert die Anzeige von 3 Spalten auf 2 Spalten für das Handy */
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px; /* Abstand zwischen den Karten reduzieren */
+        padding-bottom: 20px;
+    }
+    
+    /* 4. EINZELNE PRODUKTKARTE (.product-card) */
     .product-card {
-        /* Damit die Karte auf dem Handy nicht zu schmal wird */
         max-width: 100%;
-        margin: 10px 0; /* Abstand oben und unten */
     }
     
-    /* 5. Header-Bereich (optional) */
-    .header {
-        padding: 10px 15px;
+    /* 5. OFF-CANVAS MENÜ FIX */
+    #off-canvas-menu {
+        /* Menübreite für kleine Geräte anpassen */
+        width: 280px; 
+        left: -280px;
+    }
+    
+    body.menu-active #off-canvas-menu {
+        transform: translateX(280px); 
     }
 }
+
+/* --- RTL Mobile Fixes für das neue Layout --- */
+[dir="rtl"] .product-section { 
+    grid-template-columns: 1fr;
+}
+
+[dir="rtl"] #off-canvas-menu {
+    left: auto; 
+    right: -280px; 
+}
+
+[dir="rtl"] body.menu-active #off-canvas-menu {
+    transform: translateX(-280px); 
+}
+
