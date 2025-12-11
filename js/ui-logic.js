@@ -49,6 +49,7 @@ window.addEventListener('load', () => {
      }
 });
 
+// --- FIX APPLIED HERE ---
 window.addEventListener('scroll', () => {
     if (!floatingHeader || !oilColorBar || !heroSection) return; // Safety check
 
@@ -68,7 +69,7 @@ window.addEventListener('scroll', () => {
         // Reset the margin top of the main content
         heroSection.style.marginTop = `var(--header-stack-height)`;
     }
-});
+}, { passive: true }); // <-- THIS IS THE CRITICAL ADDITION
 
 /*-------------------------------------Sided Menu------------------------------------------*/
 /*------------------------------NEW&FEATURED and SALES-------------------------------------*/
@@ -184,4 +185,5 @@ function toggleContactModal() {
         // 2. Restore background scrolling (This UNLOCKS the screen)
         document.body.style.overflow = ''; // Ensure this line is exactly here
     }
+
 }
