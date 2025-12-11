@@ -561,4 +561,55 @@ order: 1; /* Force Filters into the second column (200px) */
    so we flip them one more time (even number of flips = correct orientation) */
 [dir="rtl"] .contact-modal-content i {
     transform: scaleX(1);
+
+}
+
+
+
+/* ============================================== */
+/* === RESPONSIVE DESIGN: HANDY / TABLET LAYOUT === */
+/* ============================================== */
+
+@media screen and (max-width: 768px) {
+    
+    /* 1. Haupt-Container (Filter & Produkte) */
+    .content {
+        /* Ändert die Anordnung von 'nebeneinander' (row) zu 'untereinander' (column) */
+        flex-direction: column; 
+    }
+    
+    /* 2. Die Filter-Sidebar */
+    .filter-sidebar {
+        /* Die Sidebar soll auf dem Handy die volle Breite einnehmen */
+        width: 100%;
+        /* Oben an den Bildschirmrand schieben */
+        order: -1; 
+        padding: 15px; /* Etwas Luft hinzufügen */
+        
+        /* WICHTIGE ÄNDERUNG für Handys: */
+        /* Wir blenden die Filter vorerst aus, da sie viel Platz wegnehmen. 
+           Besser ist eine Hamburger-Menü-Lösung, aber das ist ein guter Start. 
+           (Du kannst die Zeile später entfernen, um sie sichtbar zu lassen) */
+        /* display: none; */ 
+    }
+    
+    /* 3. Der Container für die Produkte */
+    .products-container {
+        /* Auch der Produktbereich soll die volle Breite einnehmen */
+        width: 100%;
+        /* Den Abstand zum Filter-Bereich oben oder unten regeln */
+        padding: 0 15px;
+    }
+    
+    /* 4. Einzelne Produktkarten (Random Products) */
+    .product-card {
+        /* Damit die Karte auf dem Handy nicht zu schmal wird */
+        max-width: 100%;
+        margin: 10px 0; /* Abstand oben und unten */
+    }
+    
+    /* 5. Header-Bereich (optional) */
+    .header {
+        padding: 10px 15px;
+    }
 }
