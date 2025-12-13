@@ -589,7 +589,16 @@ order: 1; /* Force Filters into the second column (200px) */
         overflow: hidden; 
         margin-top: var(--header-stack-height);
     }
-    
+    .add-to-cart-btn {
+        /* Reduce Text Size */
+        font-size: 0.8rem; /* Smaller text than the default 0.9rem used for other buttons */
+        
+        /* Reduce Padding to shrink the overall size of the button */
+        padding: 6px 12px; 
+        
+        /* Optional: If the button is too wide, limit its width */
+        /* max-width: 150px; */ 
+    }
     /* 2. Individual Slide Container */
     .slide {
         /* Must fill the container */
@@ -620,11 +629,38 @@ order: 1; /* Force Filters into the second column (200px) */
         text-align: center;
         width: 80%; 
     }
+    /* 1. Global Base Font Reduction */
+    body {
+        /* Reduces the base font size from the standard 16px down to 14px */
+        font-size: 14px; 
+    }
     
+    /* 2. Specific Element Reduction (Headings and Key Text) */
+    
+    /* Reduce H1/H2 sizes */
+    h1 {
+        font-size: 2.0rem; 
+    }
+    h2 {
+        font-size: 1.5rem; 
+    }
     .slide-content h2 {
         font-size: 1.3rem !important; 
     }
-
+    .product-card h3 {
+        font-size: 1.1rem; 
+    }
+    
+    /* Reduce button text size */
+    .btn, button {
+        font-size: 0.9rem;
+        padding: 8px 16px; /* Adjust padding for smaller text */
+    }
+    
+    /* Ensure header links are not too large */
+    .nav-links a {
+        font-size: 1.0rem;
+    }
     .slide-content p {
         font-size: 0.8rem !important; 
         margin-bottom: 8px;
@@ -706,6 +742,7 @@ order: 1; /* Force Filters into the second column (200px) */
 [dir="rtl"] body.menu-active #off-canvas-menu {
     transform: translateX(-280px); 
 }
+
 
 
 
