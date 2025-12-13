@@ -650,7 +650,9 @@ order: 1; /* Force Filters into the second column (200px) */
     .product-card h3 {
         font-size: 1.1rem; 
     }
-    
+    .main-heading { 
+        font-size: 1.5rem !important; /* Use !important if needed to override existing mobile header size */
+    }
     /* Reduce button text size */
     .btn, button {
         font-size: 0.9rem;
@@ -742,6 +744,7 @@ order: 1; /* Force Filters into the second column (200px) */
 [dir="rtl"] body.menu-active #off-canvas-menu {
     transform: translateX(-280px); 
 }
+
 
 
 
