@@ -355,13 +355,15 @@ body.menu-active #off-canvas-menu {
     display: flex;
     flex-direction: column; /* Stack image and details vertically */
     transition: transform 0.2s ease;
-    height: 100%; /* Ensure all cards in the grid are the same height */
+    max-width: 100%;
+    width: 100%;
 }
 
 /* Hover effect */
 .product-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+
 }
 
 /* Image container styling */
@@ -423,11 +425,12 @@ body.menu-active #off-canvas-menu {
     background-color: #51624b; /* Slightly lighter on hover */
 }
 #product-results {
-    /* Ensure it uses the Grid layout model */
     display: grid; 
-    /* Default: one column for mobile view (small screens) */
-    grid-template-columns: 1fr; 
-    gap: 20px; /* Space between products */
+    
+    /* CRITICAL LINE: Creates responsive columns that wrap */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    
+    gap: 20px; /* Space between the rows and columns */
     padding: 20px 0;
 }
 
@@ -740,8 +743,18 @@ order: 1; /* Force Filters into the second column (200px) */
         /* Change to two columns when screen is wider than 768px */
         /* repeat(2, 1fr) means two columns, each taking an equal fraction (1fr) of space */
         grid-template-columns: repeat(2, 1fr);
+        gap: 20px; /* Space between the rows and columns */
+        padding: 20px 0;
     }
+    .product-card:hover {
+        transform: translateY(-5px) scale(1.02); 
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); 
+        transition: all 0.3s ease;
 
+    }
+    .product-card:active {
+    opacity: 0.9;
+    }
     /* Optional: Further constrain the card image height to make the card smaller overall */
     .product-card .product-image-container {
         height: 180px; /* Reduced from 200px to make the card smaller vertically */
