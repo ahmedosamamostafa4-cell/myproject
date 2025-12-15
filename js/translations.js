@@ -56,6 +56,7 @@ const translations = {
         "contact-title": "Contact Us",
         "contact-slogan": "We're always here to help you find your perfect pair.",
         "social-title": "Connect with us on Social Media",
+
     },
     ar: {
         "page-title": "OriginalShoes - الصفحة الرئيسية",
@@ -118,6 +119,10 @@ const translations = {
         "contact-title": "تواصل معنا",
         "contact-slogan": "نحن هنا لمساعدتك دائمًا في العثور على حذائك المثالي.",
         "social-title": "تواصل معنا عبر وسائل التواصل",
+        "VIEW >": "عرض المنتج",
+        "browse-brands": "الماركه",
+        "size": "المقاس",
+// ... other keys
     }
 };
 

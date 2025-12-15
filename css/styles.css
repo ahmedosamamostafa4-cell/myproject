@@ -1,6 +1,7 @@
 /* --- Root Variables are defined here for simplicity, although they could be in a separate _variables.css file --- */
 :root {
-    --primary-color: #ff4500; /* Orange Accent */
+    --peej-color: #f7ede3;
+    --primary-color: firebrick; /* Orange Accent */
     --secondary-color: #333; /* Dark Text */
     --oil-color-dark: #384236; /* Dark Olive Green */
     --content-bg: #f7f7f7; /* Light background for content area */
@@ -81,7 +82,7 @@ body.menu-active #product-filters-contextual {
 #oil-color-bar .welcome-right { justify-content: flex-end; gap: 10px; }
 
 .welcome-right span, .welcome-right i {
-    color: var(--primary-color);
+    color: coral;
 }
 /*---------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------*/
@@ -220,8 +221,16 @@ body.menu-active #off-canvas-menu {
     transition: transform 1s ease-in-out;
     will-change: transform;
 }
-.slide { flex: 0 0 100%; height: 100%; display: flex; }
-.slide-half { width: 50%; height: 100%; background-size: cover; background-position: center; }
+.slide { 
+    flex: 0 0 100%; /* <-- Critical: Each slide takes 100% of the viewport */
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    background-size: cover; /* NEW: Scales the image to cover the entire slide area */
+    background-position: center; /* NEW: Centers the image */
+    background-repeat: no-repeat; /* NEW: Prevents tiling */
+}
+
 
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -259,19 +268,7 @@ body.menu-active #off-canvas-menu {
 .sidebar::-webkit-scrollbar { width: 0; }
 
 /* Sidebar Link Styles */
-.sidebar-nav-link {
-    display: block;
-    padding: 12px 20px;
-    color: var(--secondary-color);
-    text-decoration: none;
-    font-size: 1.05em;
-    font-weight: 600;
-    transition: color 0.2s, background-color 0.2s;
-}
-.sidebar-nav-link:hover {
-    color: white;
-    background-color: var(--primary-color);
-}
+
 .sidebar-divider { margin: 20px 20px; border: none; border-top: 1px solid #eee; }
 .social-links-sidebar {
     display: flex;
@@ -280,15 +277,7 @@ body.menu-active #off-canvas-menu {
     margin-top: 10px;
     margin-bottom: 20px;
 }
-.social-links-sidebar i {
-    font-size: 1.5em;
-    color: #999;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-.social-links-sidebar i:hover {
-    color: var(--primary-color);
-}
+
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------*/
@@ -339,35 +328,109 @@ body.menu-active #off-canvas-menu {
     padding-bottom: 5px; 
     margin-bottom: 10px;
 }
-.filter-option { display: flex; align-items: center; margin-bottom: 5px; }
-.filter-option label { margin-left: 8px; cursor: pointer; font-size: 0.95em; }
+.filter-option { 
+    display: ruby-text;
+    flex-wrap: wrap;
+    align-items: center; 
+    margin-bottom: 5px; 
+    font-family: cursive;
+}
 
-/* Product Display Area (Right column of the inner grid) */
-#product-display-area h2 { 
-    border-bottom: 3px solid var(--primary-color); 
-    padding-bottom: 10px; 
-    margin-bottom: 25px; 
-    font-size: 1.8em;
+.filter-option label { 
+    margin-left: 5px; 
+    cursor: pointer; 
+    font-size: 1.02em; 
+}
+.compact-options {
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 15px; /* Horizontal and vertical space between the options */
+}
+/* 4. EINZELNE PRODUKTKARTE (.product-card) - NEW DESIGN */
+.product-card {
+    background-color: var(--peej-color); /* Use the new soft color */
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; /* Stack image and details vertically */
+    transition: transform 0.2s ease;
+    height: 100%; /* Ensure all cards in the grid are the same height */
+}
+
+/* Hover effect */
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Image container styling */
+.product-image-container {
+    width: 100%;
+    height: 200px; /* Fixed height for consistency */
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.product-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image fills container without distortion */
+}
+
+/* Product details section (the bottom half) */
+.product-details {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+    /* NEW: Remove text-align: left; so children can center themselves */
+}
+
+/* Price and Button Row (New element to hold price, stock, and button) */
+.price-and-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.product-price {
+    display: block;
+    text-align: center !important;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 1.1em; 
+    font-weight: 800; /* Very bold */
+    color: #666; /* Highlight color */
+}
+
+/* Button style refinement */
+.add-to-cart-btn {
+    background-color: var(--oil-color-dark);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #51624b; /* Slightly lighter on hover */
 }
 #product-results {
-    display: grid;
-    /* CHANGE HERE: Explicitly set 3 columns of equal width */
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 20px;
-    padding-bottom: 50px;
+    /* Ensure it uses the Grid layout model */
+    display: grid; 
+    /* Default: one column for mobile view (small screens) */
+    grid-template-columns: 1fr; 
+    gap: 20px; /* Space between products */
+    padding: 20px 0;
 }
 
-/* Product Card Styling (omitted for brevity, assume unchanged) */
-.product-card {
-    background-color: white; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;
-}
-.product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15); }
-.product-card img { width: 100%; height: 250px; object-fit: cover; border-bottom: 1px solid #eee; }
-.product-details { padding: 15px; text-align: center; }
-.product-details h4 { font-size: 1em; margin-top: 0; margin-bottom: 5px; color: var(--secondary-color); }
-.product-details .meta-data { margin: 5px 0; font-size: 0.9em; color: #777; }
-.product-details .price { font-size: 1.1em; font-weight: 700; color: var(--primary-color); }
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------------------------------*/
@@ -382,17 +445,18 @@ body.menu-active #off-canvas-menu {
     align-items: center;
     justify-content: center;
     padding: 0 5px; /* Give it some space */
+    
 }
 
 .cart-icon-container:hover {
-    color: var(--primary-color); /* Apply hover color */
+    color:orange; /* Apply hover color */
 }
 
 .cart-badge {
     position: absolute;
     top: -5px; /* Adjust vertical position */
     right: -10px; /* Adjust horizontal position */
-    background-color: var(--primary-color); /* Orange color */
+    background-color: darkcyan; /* Orange color */
     color: white;
     border-radius: 50%;
     padding: 1px 6px;
@@ -516,8 +580,14 @@ body.menu-active #off-canvas-menu {
 [dir="rtl"] #oil-color-bar { flex-direction: row-reverse; }
 [dir="rtl"] .welcome-right { justify-content: flex-start; }
 [dir="rtl"] #floating-header { flex-direction: row; }
-[dir="rtl"] #left-util { justify-content: flex-end; }
-[dir="rtl"] #right-util { justify-content: flex-start;}
+#left-util, #right-util { 
+    width: 100px; /* <--- These are likely the icon containers */
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+}
+#left-util { justify-content: flex-start; }
+#right-util { justify-content: flex-end; }
 [dir="rtl"] .product-section { grid-template-columns: 1fr 200px; } /* Flip inner grid for RTL */
 [dir="rtl"] .filter-option label { margin-left: 0; margin-right: 8px; }
 [dir="rtl"] .social-links-sidebar { justify-content: flex-end; padding: 0 20px; }
@@ -575,19 +645,16 @@ order: 1; /* Force Filters into the second column (200px) */
     /* --- 0. Anpassung der Root Variablen (um vertikalen Platz zu sparen) --- */
     :root {
          /* Öl-Bar und Header-Höhe etwas reduzieren */
-         --oil-bar-height: 35px; 
+         --oil-bar-height: 45px; 
          --header-stack-height: 85px; 
     }
     
     /* Sicherstellen, dass der Content unter dem angepassten Header beginnt */
     /*----------------------------------------------------*/
+    /* ... existing CSS ... */
     #hero-section {
-        /* Set a reliable, visible height: 50% of screen height */
-        height: 50vh !important; 
-        min-height: 50vh !important; /* Ensure it stays at least this tall */
-        max-height: 50vh !important; 
-        overflow: hidden; 
-        margin-top: var(--header-stack-height);
+        height: 50vh !important; /* This is the current height */
+        /* ... existing CSS ... */
     }
     .add-to-cart-btn {
         /* Reduce Text Size */
@@ -599,27 +666,6 @@ order: 1; /* Force Filters into the second column (200px) */
         /* Optional: If the button is too wide, limit its width */
         /* max-width: 150px; */ 
     }
-    /* 2. Individual Slide Container */
-    .slide {
-        /* Must fill the container */
-        height: 100% !important; 
-        width: 100vw !important; 
-    }
-    
-    /* 3. Image Element (ABSOLUTE OVERRIDE) */
-    /* This MUST win the conflict to show the full image */
-    #hero-section .slide img {
-        /* This forces the entire photo to be visible (NO CROPPING) */
-        object-fit: contain !important; 
-        
-        /* Ensure the image scales freely within the 'contain' rule */
-        height: 100% !important; /* Take up 100% of the container height */
-        width: 100% !important; /* Take up 100% of the container width */
-        
-        /* Add a secondary property just in case an inheritance issue exists */
-        max-width: 100% !important; 
-        max-height: 100% !important;
-    }
     
     /* 4. Text and button placement adjustments */
     .slide-content {
@@ -630,33 +676,17 @@ order: 1; /* Force Filters into the second column (200px) */
         width: 80%; 
     }
     /* 1. Global Base Font Reduction */
-    body {
-        /* Reduces the base font size from the standard 16px down to 14px */
-        font-size: 14px; 
-    }
-    
-    /* 2. Specific Element Reduction (Headings and Key Text) */
-    
-    /* Reduce H1/H2 sizes */
-    h1 {
-        font-size: 2.0rem; 
-    }
-    h2 {
-        font-size: 1.5rem; 
-    }
-    .slide-content h2 {
-        font-size: 1.3rem !important; 
-    }
-    .product-card h3 {
-        font-size: 1.1rem; 
-    }
-    .main-heading { 
-        font-size: 1.5rem !important; /* Use !important if needed to override existing mobile header size */
+    #floating-header h1 { 
+    flex-grow: 1; 
+    text-align: center; 
+    font-size: 1.2em; /* <--- This is the conflicting rule! */
+    font-weight: bold; 
+    margin: 0; 
     }
     /* Reduce button text size */
     .btn, button {
-        font-size: 0.9rem;
-        padding: 8px 16px; /* Adjust padding for smaller text */
+        font-size: 0.7rem;
+        padding: 5px 2px; /* Adjust padding for smaller text */
     }
     
     /* Ensure header links are not too large */
@@ -706,17 +736,21 @@ order: 1; /* Force Filters into the second column (200px) */
         padding: 15px; 
     }
     
-    /* 3. PRODUKTKARTEN GRID (#product-results) */
     #product-results {
-        /* Ändert die Anzeige von 3 Spalten auf 2 Spalten für das Handy */
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 10px; /* Abstand zwischen den Karten reduzieren */
-        padding-bottom: 20px;
+        /* Change to two columns when screen is wider than 768px */
+        /* repeat(2, 1fr) means two columns, each taking an equal fraction (1fr) of space */
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Optional: Further constrain the card image height to make the card smaller overall */
+    .product-card .product-image-container {
+        height: 180px; /* Reduced from 200px to make the card smaller vertically */
     }
     
     /* 4. EINZELNE PRODUKTKARTE (.product-card) */
     .product-card {
         max-width: 100%;
+        width: 100%;
     }
     
     /* 5. OFF-CANVAS MENÜ FIX */
@@ -745,10 +779,80 @@ order: 1; /* Force Filters into the second column (200px) */
     transform: translateX(-280px); 
 }
 
+/* --- USER REQUEST: HIDE SEARCH AND PERSON ICONS --- */
+/* Assuming Font Awesome classes for Search (fa-search) and Person/Account (fa-user) */
+.fa-search,
+.fa-user {
+    display: none !important;
+}
 
 
 
+/* New row to contain name and price on the same line */
+.size-and-name {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #333; 
+    margin: 0 0 4px 0; 
+    line-height: 1.3;
+    text-align: center; /* Enforce centering */
+    font-family: serif;
 
+}
+.gender {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #333; 
+    margin: 0 0 4px 0; 
+    line-height: 1;
+    text-align: center; /* Enforce centering */
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+.product-brand {
+    font-size: 1.2em; 
+    font-weight: 1000;
+    color: firebrick; 
+    margin-bottom: 5px; /* Tighter spacing */
+    text-align: center; /* Enforce centering */
+    font-family: serif;
+}
+.product-spec {
+    font-size: 0.85em; 
+    font-weight: 500;
+    color: #333; 
+    margin-bottom: px; /* Tighter spacing */
+    text-align: center; /* Enforce centering */
+    font-family: 'Courier New', Courier, monospace;
+}
+/* Change the button class from add-to-cart-btn to view-product-btn */
+.view-product-btn {
+    /* Use the same style as the old button, just changing the name */
+    background-color: brown;
+    color: white;
+    border: none;
+    padding: 3px 5px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 900;
+    transition: background-color 0.2s;
+    width: 60%; /* Make it full width for prominence */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.view-product-btn:hover {
+    background-color: #51624b; /* Slightly lighter on hover */
+}
+
+/* Ensure the old class is styled correctly if needed, or remove it */
+/* .add-to-cart-btn { display: none; } <--- You can use this to hide any old buttons */
+
+/* Adjust the price-and-actions row to handle the full-width button */
+.price-and-actions {
+    display: flex;
+    justify-content: center; /* Center the button */
+    margin-top: auto; /* Push the button to the bottom of the card */
+    padding-top: 10px;
+}
 
 
 

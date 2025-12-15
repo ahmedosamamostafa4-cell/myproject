@@ -151,7 +151,7 @@
 
         <hr class="sidebar-divider" style="border-top: 1px solid #ddd;">
         
-        <a href="#" class="menu-nav-link"><i class="fas fa-shopping-cart mr-3"></i> <span data-translate="cart" onclick="openCheckoutModalIfCartIsReady()">Shopping Cart</span></a>
+        <a href="#" class="menu-nav-link"><i class="fas fa-shopping-cart mr-3"></i> <span data-translate="cart" onclick="openCheckoutModalIfCartIsReady(); toggleOffCanvasMenu();">Shopping Cart</span></a>
 
         <div style="margin-top: auto; padding: 20px 10px;">
             <a href="#" id="lang-toggle-menu" class="lang-toggle menu-nav-link" onclick="event.preventDefault(); toggleLanguage(); toggleOffCanvasMenu();" style="text-align: center;">Language (العربية)</a>
@@ -171,14 +171,12 @@
 
     <section id="hero-section">
         <div id="slider-strip">
-            <div class="slide">
-                <div class="slide-half" style="background-image: url('https://tqfbwunprgdllyolimgd.supabase.co/storage/v1/object/public/Shoe%20Images/shoes.jfif');"></div>
-            </div>
-            <div class="slide">
-                <div class="slide-half" style="background-image: url('https://tqfbwunprgdllyolimgd.supabase.co/storage/v1/object/public/Shoe%20Images/varieties_of_shoes.jfif');"></div>
-            </div>
-        </div>
-    </section>
+            
+            <div class="slide" style="background-image: url('https://tqfbwunprgdllyolimgd.supabase.co/storage/v1/object/public/Shoe%20Images/shoes.jfif');"></div>
+            
+            <div class="slide" style="background-image: url('https://tqfbwunprgdllyolimgd.supabase.co/storage/v1/object/public/Shoe%20Images/varieties_of_shoes.jfif');"></div>
+            
+        </div> </section>
 
         <main class="product-section">
             
@@ -186,11 +184,13 @@
                 <h2 data-translate="filter-shoes">Filter Shoes</h2>
                 <div class="filter-group-contextual">
                     <h3 data-translate="browse-categories">Categories</h3>
+                    <div class="compact-options">
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-new-arrivals" name="category" value="New Arrivals" onchange="filterProducts()"><label for="filter-new-arrivals" data-translate="new-arrivals-filter">New Arrivals</label></div>
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-offers" name="category" value="Offers" onchange="filterProducts()"><label for="filter-offers" data-translate="offers-filter">Offers</label></div>
                 </div>
                 <div class="filter-group-contextual">
-                    <h3>Brands</h3>
+                    <h3 data-translate="browse-brands">Brands</h3>
+                    <div class="compact-options">
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-nike" name="brand" value="Nike" onchange="filterProducts()"><label for="filter-nike">Nike</label></div>
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-adidas" name="brand" value="Adidas" onchange="filterProducts()"><label for="filter-adidas">Adidas</label></div>
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-skechers" name="brand" value="Skechers" onchange="filterProducts()"><label for="filter-skechers">Skechers</label></div>
@@ -198,16 +198,26 @@
                 
                 <div class="filter-group-contextual">
                     <h3 data-translate="gender">Gender</h3>
+                    <div class="compact-options">
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-men" name="gender" value="Men" onchange="filterProducts()"><label for="filter-men" data-translate="men-filter">Men</label></div>
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-women" name="gender" value="Women" onchange="filterProducts()"><label for="filter-women" data-translate="women-filter">Women</label></div>
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-kids" name="gender" value="Kids" onchange="filterProducts()"><label for="filter-kids" data-translate="kids-filter">Kids</label></div>
                 </div>
                 
                 <div class="filter-group-contextual">
-                    <h3 data-translate="condition">Condition</h3>
-                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-new" name="condition" value="New" onchange="filterProducts()"><label for="filter-new" data-translate="new-shoes">New Shoes</label></div>
-                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-used" name="condition" value="Used" onchange="filterProducts()"><label for="filter-used" data-translate="used-shoes">Used Shoes</label></div>
-                </div>
+                <h3 data-translate="size">Size</h3>
+                <div class="compact-options">
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-38" name="size" value="38" onchange="filterProducts()"><label for="filter-size-38">38</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-39" name="size" value="39" onchange="filterProducts()"><label for="filter-size-39">39</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-40" name="size" value="40" onchange="filterProducts()"><label for="filter-size-40">40</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-41" name="size" value="41" onchange="filterProducts()"><label for="filter-size-41">41</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-42" name="size" value="42" onchange="filterProducts()"><label for="filter-size-42">42</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-43" name="size" value="43" onchange="filterProducts()"><label for="filter-size-43">43</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-44" name="size" value="44" onchange="filterProducts()"><label for="filter-size-44">44</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-45" name="size" value="45" onchange="filterProducts()"><label for="filter-size-45">45</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-46" name="size" value="46" onchange="filterProducts()"><label for="filter-size-46">46</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-47" name="size" value="47" onchange="filterProducts()"><label for="filter-size-47">47</label></div>
+                    </div>
             </aside>
             <div id="product-display-area">
                 <h2 data-translate="all-products">All Products</h2>

@@ -293,6 +293,7 @@ function closeOrderModal() {
  * Function called when the cart icon is clicked.
  */
 function openCheckoutModalIfCartIsReady() {
+
     if (stagedCart.length === 0) {
         if(isArabic())
         {

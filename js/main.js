@@ -1,4 +1,32 @@
 // --- APPLICATION INITIALIZATION ---
+/**
+ * Attaches event listeners to all 'Add to Cart' buttons on the product cards.
+ * This must be called every time products are rendered or filtered.
+ */
+function attachProductListeners() {
+    const cartButtons = document.querySelectorAll('.add-to-cart-btn');
+    cartButtons.forEach(button => {
+        // Prevent adding the listener multiple times
+        if (button.dataset.listenerAdded) {
+            return;
+        }
+
+        button.addEventListener('click', (e) => {
+            // Get the product ID from the button's data attribute
+            const productId = e.currentTarget.dataset.productId;
+            
+            // Check if the required function exists before calling it
+            if (typeof addToStagedCart === 'function') {
+                addToStagedCart(productId);
+            } else {
+                console.error('CRITICAL ERROR: addToStagedCart function is not defined.');
+            }
+        });
+        
+        // Mark the button so we don't attach the listener again
+        button.dataset.listenerAdded = 'true';
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     // Note: applyTranslations and filterProducts must be defined 

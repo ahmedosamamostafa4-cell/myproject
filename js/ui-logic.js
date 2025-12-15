@@ -11,6 +11,7 @@ let currentSlide = 0;
 function moveSlider() {
     if (!sliderStrip || slides.length === 0) return;
 
+    // The logic is perfect: loops 0 -> 1 -> 0
     currentSlide = (currentSlide + 1) % slides.length;
     
     // 1. Calculate the magnitude of the shift (e.g., 100, 200, 300)
@@ -21,17 +22,21 @@ function moveSlider() {
     let offset;
 
     if (isRTL) {
-        // If Arabic (RTL), we need a POSITIVE offset to move the strip to the right.
+        // If Arabic (RTL), POSITIVE offset moves the strip to the right.
         offset = magnitude;
     } else {
-        // If English (LTR), we need a NEGATIVE offset to move the strip to the left.
+        // If English (LTR), NEGATIVE offset moves the strip to the left.
         offset = magnitude * -1;
     }
 
-    // Apply the direction-aware transformation
-    sliderStrip.style.transform = `translateX(${offset}vw)`;
+    // Apply the transformation
+    // If currentSlide is 0, offset is 0.
+    // If currentSlide is 1, offset is -100 (LTR) or 100 (RTL).
+    sliderStrip.style.transform = `translateX(${offset}vw)`; 
 }
 
+// This line ensures the slider starts moving automatically (assuming 3000ms interval)
+// ENSURE THIS IS PRESENT AT THE END OF THE SLIDER SECTION IN ui-logic.js
 setInterval(moveSlider, 3000);
 
 // --- 3. FIXED HEADER SCROLL LOGIC ---
