@@ -12,20 +12,20 @@ let stagedCart = [];
  * and updates the header badge.
  */
 function updateStagedCountDisplay() {
-    // We only display the count of items in the stagedCart for this flow
     const totalCount = stagedCart.reduce((sum, item) => sum + item.quantity, 0);
-    const cartCountElement = document.getElementById('cart-count');
-    if (cartCountElement) {
-        cartCountElement.textContent = totalCount;
-        // Apply a small bounce animation if the count increases
-        if (totalCount > 0) {
-            cartCountElement.style.transform = 'scale(1.3)';
-            setTimeout(() => {
-                 cartCountElement.style.transform = 'scale(1.0)';
-            }, 200);
-        } else {
-            cartCountElement.style.transform = 'scale(1.0)';
-        }
+    
+    // Update the main menu badge (if it exists)
+    const mainBadge = document.getElementById('cart-count');
+    if (mainBadge) mainBadge.textContent = totalCount;
+
+    // Update the PDP badge (the one inside the detail view)
+    const pdpBadge = document.getElementById('detail-cart-count');
+    if (pdpBadge) {
+        pdpBadge.textContent = totalCount;
+        
+        // Add a little animation so the user sees it updated
+        pdpBadge.style.transform = 'scale(1.3)';
+        setTimeout(() => pdpBadge.style.transform = 'scale(1.0)', 200);
     }
 }
 
@@ -112,6 +112,61 @@ function handleAddToCart(productId) {
     }
 }
 
+
+function handlePDPAddToCart(productId) {
+    // 1. Get PDP-specific quantity input
+    const quantityInput = document.getElementById(`qty-${productId}`);
+    const quantity = quantityInput ? parseInt(quantityInput.value, 10) : 1;
+
+    if (typeof products === 'undefined') return;
+    const product = products.find(p => p.id === productId);
+
+    if (!product) return;
+
+    // 2. Stock & Quantity Validation
+    if (quantity < 1) {
+        pdpAlert(isArabic() ? "برجاء اختيار كمية صحيحة" : "Please select a valid quantity", true);
+        return;
+    }
+
+    const existingItem = stagedCart.find(item => item.id === productId);
+    const currentCartQty = existingItem ? existingItem.quantity : 0;
+    const totalNewQty = currentCartQty + quantity;
+
+    if (totalNewQty > product.stock) {
+        const stockMsg = isArabic() 
+            ? `الحد الأقصى هو ${product.stock}. لديك بالفعل ${currentCartQty} في السلة.`
+            : `Max stock is ${product.stock}. You have ${currentCartQty} in cart.`;
+        pdpAlert(stockMsg, true); // Show error banner in PDP
+        return;
+    }
+
+    // 3. Update the Staged Cart Array
+    if (existingItem) {
+        existingItem.quantity += quantity;
+    } else {
+        stagedCart.push({ 
+            id: product.id, 
+            name: product.name, 
+            price: product.price, 
+            quantity: quantity,
+            img: product.img 
+        });
+    }
+
+    // 4. Update UI
+    updateStagedCountDisplay(); // Syncs the badges (both main and PDP)
+    
+    if (quantityInput) quantityInput.value = 1; // Reset PDP input
+
+    // 5. Trigger the PDP-ONLY Banner Notification
+    const successMsg = isArabic()
+        ? `تم إضافة ${quantity} من ${product.name} للحقيبة`
+        : `Added ${quantity} x ${product.name} to bag!`;
+    
+    pdpAlert(successMsg); 
+}
+
 /**
  * Renders the items in the stagedCart array into the checkout modal list.
  * It also recalculates and updates the total cost and button state.
@@ -190,7 +245,6 @@ function renderStagedCartItems() {
 
 function changeQuantity(productId, delta) {
     const input = document.getElementById(`qty-${productId}`);
-    
     // --- NEW: Find the product and its stock ---
     // Assuming 'products' is globally accessible from inventory.js
     if (typeof products === 'undefined') {
@@ -235,30 +289,24 @@ function getStagedCartTotal() {
  * @param {string} message - The message to display.
  * @param {('success'|'error'|'info')} type - The type of alert.
  */
-function alertMessage(message, type) {
+function alertMessage(message, type = 'info') {
     const alertBox = document.getElementById('alert-message-box');
-    
-    if (alertBox) {
-        alertBox.textContent = message;
-        alertBox.classList.remove('opacity-100', 'bg-red-600', 'bg-green-600', 'bg-blue-600');
-        
-        if (type === 'success') {
-            alertBox.classList.add('bg-green-600');
-        } else if (type === 'error') {
-            alertBox.classList.add('bg-red-600');
-        } else { // 'info' or default
-            alertBox.classList.add('bg-blue-600');
-        }
-        
-        alertBox.classList.remove('opacity-0', 'hidden');
-        alertBox.classList.add('opacity-100');
+    if (!alertBox) return;
 
-        setTimeout(() => {
-            alertBox.classList.remove('opacity-100');
-            alertBox.classList.add('opacity-0');
-            setTimeout(() => alertBox.classList.add('hidden'), 300); 
-        }, 3000);
-    }
+    alertBox.textContent = message;
+    
+    // Reset classes and apply type
+    alertBox.className = ''; 
+    alertBox.classList.add('active');
+    
+    // Optional: change color based on type
+    if (type === 'error') alertBox.style.backgroundColor = '#e74c3c';
+    else alertBox.style.backgroundColor = '#2ecc71'; // Success Green
+
+    // Clear after 3 seconds
+    setTimeout(() => {
+        alertBox.classList.remove('active');
+    }, 3000);
 }
 
 // --- 3. MODAL CONTROL LOGIC ---
@@ -470,4 +518,14 @@ function removeFromStagedCart(productId) {
         const message = isArabic() ? `تمت إزالة ${removedItem.name}` : `Removed ${removedItem.name}`;
         alertMessage(message, 'info');
     }
+}
+
+function handleAddToCartFromDetail(productId, quantity) {
+    // We manually set the value so your existing handleAddToCart can read it,
+    // or we can slightly modify handleAddToCart to accept a qty directly.
+    
+    // Simplest way: Call handleAddToCart and then close the view
+    handleAddToCart(productId); 
+    // Note: handleAddToCart usually looks for an ID 'qty-ID'. 
+    // You might need to update handleAddToCart to accept (productId, manualQty)
 }

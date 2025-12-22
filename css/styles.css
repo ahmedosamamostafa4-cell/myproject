@@ -220,6 +220,7 @@ body.menu-active #off-canvas-menu {
     height: 100%;
     transition: transform 1s ease-in-out;
     will-change: transform;
+    
 }
 .slide { 
     flex: 0 0 100%; /* <-- Critical: Each slide takes 100% of the viewport */
@@ -229,6 +230,7 @@ body.menu-active #off-canvas-menu {
     background-size: cover; /* NEW: Scales the image to cover the entire slide area */
     background-position: center; /* NEW: Centers the image */
     background-repeat: no-repeat; /* NEW: Prevents tiling */
+    
 }
 
 
@@ -333,7 +335,7 @@ body.menu-active #off-canvas-menu {
     flex-wrap: wrap;
     align-items: center; 
     margin-bottom: 5px; 
-    font-family: cursive;
+    font-style: oblique;
 }
 
 .filter-option label { 
@@ -348,7 +350,7 @@ body.menu-active #off-canvas-menu {
 }
 /* 4. EINZELNE PRODUKTKARTE (.product-card) - NEW DESIGN */
 .product-card {
-    background-color: var(--peej-color); /* Use the new soft color */
+    background-color: white; /* Use the new soft color */
     border-radius: 12px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
     overflow: hidden;
@@ -432,6 +434,37 @@ body.menu-active #off-canvas-menu {
     
     gap: 20px; /* Space between the rows and columns */
     padding: 20px 0;
+}
+
+.detail-header {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    background: rgb(255, 255, 255);
+}
+.header-logo {
+    height: 100px;           /* Adjust this value (e.g., 30px to 45px) to change size */
+    width: 80px;            /* Keeps the aspect ratio perfect */
+    max-width: 150px;       /* Prevents it from getting too wide on desktop */
+    cursor: pointer;        /* Makes it feel interactive */
+    object-fit: contain;    /* Ensures the image isn't squashed or stretched */
+    margin-left: 200px;      /* Adds breathing room from the back arrow */
+}
+.back-button {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.detail-content {
+    display: flex;
+    flex-direction: column; /* Mobile first */
+    padding: 20px;
 }
 
 
@@ -519,11 +552,27 @@ body.menu-active #off-canvas-menu {
     align-items: center;
 }
 #alert-message-box {
-    /* Assuming default LTR position is bottom: X; right: Y; */
-    
-    /* Swap from RIGHT to LEFT */
-    left: auto; /* Set a left margin */
-    right: 20px; /* Remove the right anchor */
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999 !important; /* The highest possible value */
+    background-color: #333; /* Dark background for contrast */
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 88px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    font-weight: bold;
+    text-align: center;
+    min-width: 20px;
+    pointer-events: none; /* So it doesn't block clicks */
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease;
+}
+
+#alert-message-box.active {
+    opacity: 1;
+    top: 40px; /* Slides down slightly when active */
 }
 /*-------------------------------------------------------------*/
 
@@ -595,7 +644,7 @@ body.menu-active #off-canvas-menu {
 [dir="rtl"] .filter-option label { margin-left: 0; margin-right: 8px; }
 [dir="rtl"] .social-links-sidebar { justify-content: flex-end; padding: 0 20px; }
 [dir="rtl"] #alert-message-box {
-    left: 20px; /* Set a left margin */
+    left: 200px; /* Set a left margin */
     right: auto; /* Remove the right anchor */
 }
 /* RTL Off-Canvas Menu Overrides */
@@ -651,12 +700,15 @@ order: 1; /* Force Filters into the second column (200px) */
          --oil-bar-height: 45px; 
          --header-stack-height: 85px; 
     }
-    
+    .detail-content { flex-direction: row; gap: 40px; }
+    .detail-image-section { flex: 1; }
+    .detail-info-section { flex: 1; }
     /* Sicherstellen, dass der Content unter dem angepassten Header beginnt */
     /*----------------------------------------------------*/
     /* ... existing CSS ... */
     #hero-section {
         height: 50vh !important; /* This is the current height */
+
         /* ... existing CSS ... */
     }
     .add-to-cart-btn {
@@ -776,6 +828,83 @@ order: 1; /* Force Filters into the second column (200px) */
     body.menu-active #off-canvas-menu {
         transform: translateX(280px); 
     }
+/*--------------------------------------Product page-------------------------------------*/
+/*--------------------------------------Product page-------------------------------------*/
+/*--------------------------------------Product page-------------------------------------*/
+/*--------------------------------------Product page-------------------------------------*/
+    /* 1. Stack the container and use flex to control order */
+    .pdp-container {
+        display: flex !important;
+        flex-direction: column !important; /* Forces vertical stacking */
+        padding: 10px !important;
+        gap: 0px !important; /* Removes gap between photo and text */
+
+    }
+
+    /* 1. Photo Section is Top Priority */
+    .pdp-gallery {
+        order: 1 !important; 
+        width: 100% !important;
+    }
+    .pdp-info {
+        order: 3 !important;
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        text-align: center !important; /* Centers text for professional mobile look */
+    }
+
+    .main-image-wrapper img {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 350px !important;
+        object-fit: contain !important;
+        
+    }
+
+    /* 2. Move Thumbnails immediately under photo */
+    .thumbnail-grid {
+        order: 2 !important;
+        justify-content: center !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* 5. Specific text ordering inside info */
+    .brand-badge { order: 1 !important; }
+    .pdp-info h1 { order: 2 !important; font-size: 1.6rem !important; }
+    .price-section { order: 3 !important; }
+    .divider { order: 4; }
+    .product-specs-grid { order: 5; }
+    .purchase-box { order: 6; }
+    .trust-icons { order: 7; }
+
+    /* Fix Image Scaling */
+    .main-image-wrapper img {
+        width: 100%;
+        max-height: 320px;
+        object-fit: contain;
+        background: #f9f9f9;
+        border-radius: 15px;
+        
+    }
+    
+    .thumb {
+        width: 55px;
+        height: 55px;
+    }
+    /* 2. RECONFIGURE LOGO FOR MOBILE ONLY */
+    .pdp-brand-header {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important; /* Centered only on mobile */
+        padding: 5px 0 !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .pdp-logo {
+        height: 90px !important; /* Smaller logo for mobile screens */
+        width: auto !important;
+    }
 }
 
 /* --- RTL Mobile Fixes für das neue Layout --- */
@@ -791,7 +920,9 @@ order: 1; /* Force Filters into the second column (200px) */
 [dir="rtl"] body.menu-active #off-canvas-menu {
     transform: translateX(-280px); 
 }
-
+[dir="rtl"] .oil-bar-style {
+    flex-direction: row-reverse;
+}
 /* --- USER REQUEST: HIDE SEARCH AND PERSON ICONS --- */
 /* Assuming Font Awesome classes for Search (fa-search) and Person/Account (fa-user) */
 .fa-search,
@@ -867,5 +998,171 @@ order: 1; /* Force Filters into the second column (200px) */
     padding-top: 10px;
 }
 
+/*-----------------------------------------------product page-------------------------------------*/
+/*-----------------------------------------------product page-------------------------------------*/
+/*-----------------------------------------------product page-------------------------------------*/
+.pdp-brand-header {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center; /* This now works because width is 100% */
+    align-items: center;
+    padding: 10px 0;         /* Small padding for a clean look */
+    border-bottom: 1px solid #eee; 
+    width: 100%;             /* MUST be 100% to center on the page */
+    margin: 0;               /* Removes any external spacing */
+}
+.pdp-logo {
+    height: 150px;            /* Professional size */
+    width: 150px;
+    object-fit: contain;
+    display: block;          /* Removes bottom ghost padding */
+}
+.product-detail-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #ffffff;
+    z-index: 20000;
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    overflow-y: auto;
+    padding-top: 0 !important;
+    
+}
 
+.product-detail-overlay.active { display: flex; }
+
+/* The Professional Oil Bar */
+.oil-bar-style {
+    background-color: var(--oil-color-dark);
+    color: white;
+    padding: 10px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.back-arrow-btn { 
+    background: none; border: none; color: white; 
+    font-size: 1.4rem; cursor: pointer; 
+}
+
+.pdp-container {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    padding: 30px 10%; /* Reduced top padding for a tighter look */
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Gallery Section */
+.main-image-wrapper img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    background: #f9f9f9;
+    
+}
+
+.thumbnail-grid {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.thumb {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.2s;
+}
+
+.thumb.active { border: 2px solid firebrick; }
+
+/* Info Section */
+.brand-badge { color: #888; letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; }
+.pdp-info h1 { font-size: 2.8rem; margin: 10px 0; font-weight: 900; line-height: 1.1; }
+.price-section .amount { font-size: 2rem; font-weight: 700; color: firebrick; }
+
+.divider { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
+
+.purchase-box {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fdfdfd;
+    border: 1px solid #ae2525;
+    border-radius: 20px;
+}
+.qty-selector-pro {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 45px;
+}
+
+.qty-selector-pro button {
+    width: 40px;
+    height: 100%;
+    background: #eee;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.qty-selector-pro input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+}
+.qty-selector-pro button:hover {
+    background-color: #f0f0f0;
+}
+
+.pdp-add-to-cart {
+    width: 100%;
+    background: #000;
+    color: #fff;
+    padding: 20px;
+    border-radius: 40px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.pdp-add-to-cart:hover { background: firebrick; transform: translateY(-2px); }
+
+/* Container for the small icons */
+#pdp-thumbnails {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 5px !important; /* Reduced from 15px to 5px */
+    padding-top: 0 !important;
+    width: 100%;
+}
+
+/* Individual small icon styling */
+.pdp-thumb-icon {
+    width: 80px !important;   /* Force width */
+    height: 80px !important;  /* Force height */
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+/* The red border for the selected photo */
+.pdp-thumb-icon.active-thumb {
+    border: 3px solid #b22222 !important;
+}
 

@@ -56,7 +56,14 @@ const translations = {
         "contact-title": "Contact Us",
         "contact-slogan": "We're always here to help you find your perfect pair.",
         "social-title": "Connect with us on Social Media",
-
+        "browse-brands": "Brands",
+        "pdp-add-to-bag": "ADD TO BAG",
+        "pdp-quantity": "Quantity",
+        "pdp-brand": "Brand",
+        "pdp-price": "Price",
+        "pdp-size": "Size:",
+        "pdp-currency": "L.E",
+        "pdp-condition": "Condition:"
     },
     ar: {
         "page-title": "OriginalShoes - الصفحة الرئيسية",
@@ -122,6 +129,15 @@ const translations = {
         "VIEW >": "عرض المنتج",
         "browse-brands": "الماركه",
         "size": "المقاس",
+        "pdp-add-to-bag": "أضف إلى العربه",
+        "pdp-quantity": "الكمية",
+        "pdp-brand": "الماركة",
+        "pdp-price": "السعر",
+        "pdp-size": "المقاس:",
+        "pdp-currency": "ج.م",
+        "pdp-condition": "الحاله:",
+        "pdp-state": "جديد"
+
 // ... other keys
     }
 };

@@ -10,7 +10,66 @@
     
     <link rel="stylesheet" href="css/styles.css"> 
 </head>
+
 <body>
+    <div id="product-detail-view" class="product-detail-overlay">
+        <div id="detail-oil-bar" class="oil-bar-style">
+            <button onclick="closeProductDetail()" class="back-arrow-btn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <span class="slogan-text" data-translate="slogan-header">Discover our world of original footwear</span>
+            <div class="cart-icon-container" style="cursor: default; position: relative;">
+                    <i class="fas fa-shopping-cart"></i>
+            <span id="detail-cart-count" class="cart-badge">0</span>
+        </div>
+        </div>
+        <div class="pdp-brand-header">
+                <img src="https://tqfbwunprgdllyolimgd.supabase.co/storage/v1/object/sign/logo/logo.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9lMjEyOTFlNi1hN2JiLTQ3NzAtYjI2NC0xMWJhM2Y5MDAwOWUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJsb2dvL2xvZ28ud2VicCIsImlhdCI6MTc2NjE2MTIxOCwiZXhwIjoyOTc3MDEyOTIxOH0.R_MRL71eqHeHsJ-JpYotYJFpJlKDqMObFOq1EBfdREE" 
+                    alt="Logo" class="pdp-logo">
+            </div>
+        <div class="pdp-container">
+            <div class="pdp-gallery">
+                <div class="main-image-wrapper">
+                    <img id="detail-main-img" src="" alt="Main Product">
+                </div>
+                <div class="thumbnail-grid" id="detail-thumbnails"></div>
+            </div>
+
+            <div class="pdp-info" style="display: flex; flex-direction: column;">
+                <div class="brand-badge" id="detail-brand"></div>
+                <h1 id="detail-name"></h1>
+
+                <div class="price-section">
+                    <span class="currency" data-translate="pdp-currency">L.E</span>
+                    <span id="detail-price" class="amount"></span>
+                </div>
+                
+                <hr class="divider">
+
+                <div class="product-specs-grid">
+                    <div class="spec-item">
+                        <i class="fas fa-ruler-horizontal"></i>
+                        <strong data-translate="pdp-size">Size:</strong> <span id="detail-size-val"></span>
+                    </div>
+                
+                    <div class="spec-item">
+                        <i class="fas fa-check-circle"></i>
+                        <strong data-translate="pdp-condition">Condition:</strong> <span id="detail-condition-val"></span>
+                    </div>
+                    <div id="purchase-controls-container"></div>
+                </div>
+                <div class="trust-icons">
+                    <span><i class="fas fa-truck"></i> Fast Delivery</span>
+                    <span><i class="fas fa-undo"></i> 2 Days Return</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="oil-color-bar">...</div>
+    <div id="floating-header">...</div>
+    ...
+</body>
     
     <div id="oil-color-bar"> 
         <div class="bar-side-content">
@@ -199,14 +258,15 @@
                 <div class="filter-group-contextual">
                     <h3 data-translate="gender">Gender</h3>
                     <div class="compact-options">
-                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-men" name="gender" value="Men" onchange="filterProducts()"><label for="filter-men" data-translate="men-filter">Men</label></div>
-                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-women" name="gender" value="Women" onchange="filterProducts()"><label for="filter-women" data-translate="women-filter">Women</label></div>
-                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-kids" name="gender" value="Kids" onchange="filterProducts()"><label for="filter-kids" data-translate="kids-filter">Kids</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-men" name="gender" value="MEN'S" onchange="filterProducts()"><label for="filter-men" data-translate="men-filter">Men</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-women" name="gender" value="WOMEN'S" onchange="filterProducts()"><label for="filter-women" data-translate="women-filter">Women</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-kids" name="gender" value="KID'S" onchange="filterProducts()"><label for="filter-kids" data-translate="kids-filter">Kids</label></div>
                 </div>
                 
                 <div class="filter-group-contextual">
                 <h3 data-translate="size">Size</h3>
                 <div class="compact-options">
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-37" name="size" value="37" onchange="filterProducts()"><label for="filter-size-37">37</label></div>
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-38" name="size" value="38" onchange="filterProducts()"><label for="filter-size-38">38</label></div>
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-39" name="size" value="39" onchange="filterProducts()"><label for="filter-size-39">39</label></div>
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-40" name="size" value="40" onchange="filterProducts()"><label for="filter-size-40">40</label></div>
@@ -217,6 +277,7 @@
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-45" name="size" value="45" onchange="filterProducts()"><label for="filter-size-45">45</label></div>
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-46" name="size" value="46" onchange="filterProducts()"><label for="filter-size-46">46</label></div>
                     <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-47" name="size" value="47" onchange="filterProducts()"><label for="filter-size-47">47</label></div>
+                    <div class="filter-option"><input type="checkbox" class="filter-checkbox" id="filter-size-48" name="size" value="48" onchange="filterProducts()"><label for="filter-size-48">48</label></div>
                     </div>
             </aside>
             <div id="product-display-area">

@@ -192,3 +192,102 @@ function toggleContactModal() {
     }
 
 }
+
+/**
+ * Opens the full-screen product detail view
+ */
+/**
+ * Opens the full-screen product detail view
+ */
+function updateMainImage(src) {
+    document.getElementById('detail-main-img').src = src;
+    // Update active thumbnail styling
+    document.querySelectorAll('.thumb').forEach(t => {
+        t.classList.toggle('active', t.src === src);
+    });
+}
+
+// Update the "Add to Cart" Logic inside openProductDetail
+
+
+function openProductDetail(productId) {
+    const product = products.find(p => p.id == productId);
+    if (!product) return;
+
+    // 1. Fill Text and Image Content
+    document.getElementById('detail-main-img').src = product.img;
+    document.getElementById('detail-name').innerText = product.name;
+    document.getElementById('detail-brand').innerText = product.brand;
+    document.getElementById('detail-price').innerText = product.price.toFixed(2);
+    document.getElementById('detail-size-val').innerText = product.size;
+    document.getElementById('detail-condition-val').innerText = product.condition || 'Original';
+
+    const mainImg = document.getElementById('detail-main-img');
+    if (mainImg) {
+        mainImg.src = product.img;
+    }
+    // 2. Populate Thumbnails
+    const thumbContainer = document.getElementById('detail-thumbnails');
+    thumbContainer.innerHTML = ''; 
+
+    const images = [product.img, product.img1, product.img2, product.img3];
+
+    images.forEach((url, index) => {
+        // DEBUG STEP 2: Check if URL is valid
+        if (url && typeof url === 'string' && url.length > 5) {
+            const thumb = document.createElement('img');
+            thumb.src = url;
+            thumb.className = 'pdp-thumb-icon';
+            thumb.onclick = () => { mainImg.src = url; };
+            thumbContainer.appendChild(thumb);
+        } else {
+            console.warn(`%c Creating thumb ${index}: Skipped (Value is: ${url})`, "color: orange");
+        }
+    });
+
+    // 3. Inject Purchase Controls
+    const purchaseContainer = document.getElementById('purchase-controls-container');
+    if (purchaseContainer) {
+        purchaseContainer.innerHTML = `
+            <div class="purchase-box">
+                <div class="qty-selector-pro">
+                    <button type="button" id="pdp-minus">-</button>
+                    <input type="number" id="qty-${product.id}" value="1" readonly>
+                    <button type="button" id="pdp-plus">+</button>
+                </div>
+                <button id="detail-add-btn" class="pdp-add-to-cart" data-translate="pdp-add-to-bag">
+                ${translations[currentLang]["pdp-add-to-bag"]}
+                </button>
+            </div>
+        `;
+
+        // 4. Attach Unified Events
+        document.getElementById('pdp-plus').onclick = () => changeQuantity(product.id, 1);
+        document.getElementById('pdp-minus').onclick = () => changeQuantity(product.id, -1);
+        
+        // Calls your global cart-logic.js function
+        document.getElementById('detail-add-btn').onclick = () => handleAddToCart(product.id);
+    }
+
+    // 5. Unified Cart Sync
+    // This updates the badge in the PDP header using your global main menu logic
+    if (typeof updateStagedCountDisplay === 'function') {
+        updateStagedCountDisplay();
+    }
+
+    // 6. Show the view
+    const detailOverlay = document.getElementById('product-detail-view');
+    detailOverlay.scrollTop = 0; 
+    detailOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+}
+
+function closeProductDetail() {
+    console.log("Debug: Closing product detail view");
+    const detailView = document.getElementById('product-detail-view');
+    if (detailView) {
+        detailView.classList.remove('active'); // Removes the 'display: flex'
+        document.body.style.overflow = '';      // Re-enables scrolling
+    }
+}

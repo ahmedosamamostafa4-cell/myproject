@@ -30,7 +30,10 @@ async function fetchProductsFromSupabase() {
             category: doc.category,
             img: doc.img,
             size: doc.size,
-            stock: doc.stock || 0 // Ensure 'stock' exists and defaults to 0
+            stock: doc.stock || 0, // Ensure 'stock' exists and defaults to 0
+            img1: doc.img1,
+            img2: doc.img2,
+            img3: doc.img3,
         }));
 
         // After successfully fetching, call the function to display products
@@ -67,41 +70,27 @@ function renderProducts(productsToDisplay) {
         return;
     }
 
+    // ... (rest of the file remains the same)
+
     const productsHtml = productsToDisplay.map(product => {
-        // Safe check for stock
         const stockCount = product.stock || 0; 
         const outOfStock = stockCount <= 0;
-        
-        // Safe check for translation keys
         const t = (key) => (translations[currentLang] && translations[currentLang][key]) || key;
-        
-        // New translation key for the button text
-        const buttonText = outOfStock 
-            ? t('no-stock') || 'Out of Stock' 
-            : t('VIEW >') || 'View Product'; 
-        
+        const buttonText = outOfStock ? t('no-stock') : t('VIEW >'); 
         const buttonDisabled = outOfStock ? 'disabled' : '';
         const productName = product.name || 'Untitled Product';
 
-        // --- UPDATED PRODUCT CARD HTML STRUCTURE ---
         return `
             <div class="product-card" data-product-id="${product.id}">
-                
                 <div class="product-image-container">
                     <img src="${product.img || 'path/to/placeholder.jpg'}">
                 </div>
                 <div class="product-details">
-                    
-                    <div class="gender">
-                        <h3 class="product-name">${product.gender}</h3>
-                    </div>
-                    <div class = "size-and-name">
+                    <div class="gender"><h3 class="product-name">${product.gender}</h3></div>
+                    <div class="size-and-name">
                         <h3 class="product-name">${product.size}" ${productName}</h3>
                     </div>
-
-                    <p class="product-brand">
-                        ${product.brand}
-                    </p>
+                    <p class="product-brand">${product.brand}</p>
                     <p class="product-spec">
                         <span class="product-price">L.E ${(product.price || 0).toFixed(2)}</span>
                     </p>
@@ -110,13 +99,12 @@ function renderProducts(productsToDisplay) {
                         <button 
                             class="view-product-btn" 
                             data-product-id="${product.id}" 
-                            onclick="addToStagedCart('${product.id}')"
+                            onclick="openProductDetail('${product.id}')"
                             ${buttonDisabled}
                         >
                             ${buttonText} 
                         </button>
                     </div>
-                    
                 </div>
             </div>
         `;
