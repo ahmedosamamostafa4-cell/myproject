@@ -211,6 +211,12 @@ function updateMainImage(src) {
 
 
 function openProductDetail(productId) {
+    const overlay = document.querySelector('.product-detail-overlay');
+    
+    // This is the magic line that resets the scroll to the top
+    overlay.scrollTop = 0; 
+    
+    overlay.classList.add('active');
     const product = products.find(p => p.id == productId);
     if (!product) return;
 

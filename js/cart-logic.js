@@ -211,7 +211,7 @@ function renderStagedCartItems() {
                         
                         <div class="flex flex-col">
                             <span class="font-semibold text-gray-800">${item.name}</span>
-                            <span class="text-sm text-gray-500">${item.quantity} x ${item.price.toFixed(2)} L.E</span>
+                            <span class="text-sm text-gray-500">${item.quantity}x<br><br></span>
                         </div>
                     </div>
                     

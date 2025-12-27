@@ -665,14 +665,25 @@ body.menu-active #off-canvas-menu {
 /* ... existing RTL styles ... */
 
 /* FIX: Explicitly set the order of items for RTL to match the 1fr 200px sizes */
-[dir="rtl"] #product-display-area {
-order: 2; /* Force Products into the first column (1fr) */
-}
-[dir="rtl"] #product-filters-contextual {
-order: 1; /* Force Filters into the second column (200px) */
+[dir="rtl"] .product-section { 
+    display: flex !important; /* Switch from grid to flex for better RTL control */
+    flex-direction: row !important; /* Forces side-by-side */
+    gap: 30px; 
 }
 
-[dir="rtl"] .product-section { grid-template-columns: 200px 1fr; } /* This line is correct for size */
+[dir="rtl"] #product-display-area {
+    order: 2 !important;       /* This moves products to the LEFT */
+    flex-grow: 1 !important;    /* This forces products to take the remaining space */
+    min-width: 0;               /* Prevents products from pushing the filter down */
+}
+
+[dir="rtl"] #product-filters-contextual {
+    order: 1 !important;       /* This moves filters to the RIGHT */
+    width: 260px !important;    /* Forces it to stay as a sidebar, not 'big' */
+    flex-shrink: 0 !important;  /* Prevents it from collapsing */
+    display: block !important;
+}
+
 
 /* --- SLIDER RTL FLIP FIX --- */
 [dir="rtl"] .contact-modal-content {
@@ -698,6 +709,26 @@ order: 1; /* Force Filters into the second column (200px) */
 
 @media screen and (max-width: 768px) {
     
+
+
+    /*----------------RTL-------------------*/
+    /* FIX: Explicitly set the order of items for RTL to match the 1fr 200px sizes */
+    [dir="rtl"] .product-section {
+        flex-direction: column !important; /* Stacks them vertically on small screens */
+    }
+
+    [dir="rtl"] #product-filters-contextual {
+        order: -1 !important;        /* Moves filters to the TOP on mobile */
+        width: 100% !important;      /* Allows it to be full width only on mobile */
+        position: static;            /* Removes sticky on mobile to prevent interference */
+        margin-bottom: 20px;
+    }
+    
+    [dir="rtl"] #product-display-area {
+        order: 1 !important;         /* Products appear under the filter */
+        width: 100% !important;
+    }
+    /*---------------------------------------*/
     /* --- 0. Anpassung der Root Variablen (um vertikalen Platz zu sparen) --- */
     :root {
          /* Öl-Bar und Header-Höhe etwas reduzieren */
@@ -997,6 +1028,7 @@ order: 1; /* Force Filters into the second column (200px) */
     justify-content: center; /* Center the button */
     margin-top: auto; /* Push the button to the bottom of the card */
     padding-top: 10px;
+    
 }
 
 /*-----------------------------------------------product page-------------------------------------*/
@@ -1299,4 +1331,15 @@ order: 1; /* Force Filters into the second column (200px) */
     margin: 0;
     box-shadow: none; /* Optional: makes it look cleaner in the overlay */
     border: 1px solid #f0f0f0;
+}
+
+.text-indigo-700 {
+    display: inline-block !important;
+    padding: 5 0px !important; /* This creates the gap on the left and right */
+    font-weight: 500;
+    white-space: nowrap; /* Keeps the price and L.E on one line */
+}
+
+.text-gray-800 {
+    white-space: nowrap; /* Keeps the price and L.E on one line */
 }
