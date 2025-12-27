@@ -63,13 +63,15 @@ const translations = {
         "pdp-price": "Price",
         "pdp-size": "Size:",
         "pdp-currency": "L.E",
-        "pdp-condition": "Condition:"
+        "pdp-condition": "Condition:",
+        "size": "Size",
+        "recommended-title": "You Might Also Like"
     },
     ar: {
         "page-title": "OriginalShoes - الصفحة الرئيسية",
-        "brand": "الاصلى يبدا من هنا",
+        "brand": "Original Kicks",
         "welcome": "أهلاً وسهلاً!",
-        "slogan-header": "اكتشف عالمنا من الأحذية الأصلية",
+        "slogan-header": "الاصلى يبدا من هنا",
         "menu-title": "القائمة الرئيسية", 
         "slider-title": "أناقة وراحة.",
         "slider-subtitle": "اكتشف حذائك المثالي اليوم.",
@@ -84,7 +86,7 @@ const translations = {
         "browse-categories": "الفئات",
         "new-arrivals-filter": "وصل حديثاً",
         "offers-filter": "العروض",
-        "gender": "الجنس",
+        "gender": "النوع",
         "condition": "الحالة",
         "men-filter": "رجال",
         "women-filter": "نساء",
@@ -136,8 +138,18 @@ const translations = {
         "pdp-size": "المقاس:",
         "pdp-currency": "ج.م",
         "pdp-condition": "الحاله:",
-        "pdp-state": "جديد"
-
+        "pdp-state": "جديد",
+        "footer-shipping-title": "شحن مجاني",
+        "footer-shipping-desc": "على جميع الطلبات الأكثر من 2000 ج.م",
+        "footer-return-title": "إرجاع مجاني",
+        "footer-return-desc": "ضمان استرداد الأموال خلال 30 يومًا",
+        "footer-support-title": "دعم 24/7",
+        "footer-support-desc": "دعم فني مباشر على مدار اليوم",
+        "footer-about": "نوفر أفضل أحذية السنيكرز الأصلية وعالية الجودة منذ عام 2020.",
+        "footer-links-title": "روابط سريعة",
+        "footer-social-title": "تابعنا على",
+        "recommended-title": "منتجات قد تعجبك",
+        
 // ... other keys
     }
 };

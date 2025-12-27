@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 1. Initialize language to 'en' (this also sets RTL/LTR and calls filterProducts)
     if (typeof applyTranslations === 'function') {
-        applyTranslations('en');
+        applyTranslations('ar');
     }
     
     // 2. Initial product display: 

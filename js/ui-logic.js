@@ -259,14 +259,19 @@ function openProductDetail(productId) {
                 ${translations[currentLang]["pdp-add-to-bag"]}
                 </button>
             </div>
+             <div class="pdp-recommendations">
+                <h3 class="recommendation-header" data-translate="recommended-title">
+            ${translations[currentLang]["recommended-title"]}
+        </h3>
+                <div id="recommendation-grid" class="recommendation-grid">
+            </div>
         `;
-
         // 4. Attach Unified Events
         document.getElementById('pdp-plus').onclick = () => changeQuantity(product.id, 1);
         document.getElementById('pdp-minus').onclick = () => changeQuantity(product.id, -1);
         
         // Calls your global cart-logic.js function
-        document.getElementById('detail-add-btn').onclick = () => handleAddToCart(product.id);
+        document.getElementById('detail-add-btn').onclick = () => {handleAddToCart(product.id); closeProductDetail();}
     }
 
     // 5. Unified Cart Sync
@@ -276,11 +281,52 @@ function openProductDetail(productId) {
     }
 
     // 6. Show the view
+    // --- NEW: Recommendation Logic ---
+    renderRecommendations(productId);
     const detailOverlay = document.getElementById('product-detail-view');
     detailOverlay.scrollTop = 0; 
     detailOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
     
+}
+
+function renderRecommendations(currentProductId) {
+    const grid = document.getElementById('recommendation-grid');
+    if (!grid) return;
+
+    // Filter to get 4 random items excluding the current one
+    const otherProducts = products
+        .filter(p => p.id != currentProductId)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 4);
+
+    grid.innerHTML = otherProducts.map(product => {
+        const t = (key) => (translations[currentLang] && translations[currentLang][key]) || key;
+        
+        // Reusing the EXACT classes from your inventory.js
+        return `
+            <div class="product-card" data-product-id="${product.id}">
+                <div class="product-image-container">
+                    <img src="${product.img || 'path/to/placeholder.jpg'}">
+                </div>
+                <div class="product-details">
+                    <div class="gender"><h3 class="product-name">${product.gender}</h3></div>
+                    <div class="size-and-name">
+                        <h3 class="product-name">${product.size}" ${product.name}</h3>
+                    </div>
+                    <p class="product-brand">${product.brand}</p>
+                    <p class="product-spec">
+                        <span class="product-price">L.E ${(product.price || 0).toFixed(2)}</span>
+                    </p>
+                    <div class="price-and-actions">
+                        <button class="view-product-btn" onclick="openProductDetail('${product.id}')">
+                            ${t('VIEW >')} 
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 function closeProductDetail() {

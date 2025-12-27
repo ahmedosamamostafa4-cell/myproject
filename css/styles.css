@@ -8,7 +8,7 @@
     --nav-bg: white;
     /* Define specific heights for calculation */
     --oil-bar-height: 38px;
-    --main-header-height: 50px;
+    --main-header-height: 62px;
     --header-stack-height: 88px; /* Combined height (38px + 50px) */
     /* Menu specific properties */
     --menu-width: 300px;
@@ -70,7 +70,7 @@ body.menu-active #product-filters-contextual {
 #lang-toggle-bar {
     cursor: pointer;
     font-size: 1.1em;
-    padding: 5px;
+    padding: 0px;
     color: white; /* Inherits from the oil bar, but ensures it's explicit */
     transition: opacity 0.2s;
 }
@@ -126,7 +126,7 @@ body.menu-active #product-filters-contextual {
 #left-util, #right-util { width: 100px; display: flex; align-items: center; gap: 15px; }
 #left-util { justify-content: flex-start; }
 #right-util { justify-content: flex-end; }
-#floating-header h1 { flex-grow: 1; text-align: center; font-size: 1.8em; font-weight: bold; margin: 0; }
+#floating-header h1 { flex-grow: 1; text-align: center; font-size: 1.8em; font-weight: normal; margin: 0; }
 #floating-header i { cursor: pointer; font-size: 1.2em; padding: 5px; }
 #floating-header i:hover { opacity: 0.7; }
 
@@ -628,6 +628,10 @@ body.menu-active #off-canvas-menu {
 /*-----------------------------------------------RTL----------------------------------------------------------*/
 /*-----------------------------------------------RTL----------------------------------------------------------*/
 /* --- Right To Left Overrides when it comes to ARABIC --- */
+
+[dir="rtl"] #lang-toggle-bar {
+    margin-right: 19px; /* Optional: adds a tiny bit of breathing room from the left edge */
+}
 [dir="rtl"] { text-align: right; }
 [dir="rtl"] #oil-color-bar { flex-direction: row-reverse; }
 [dir="rtl"] .welcome-right { justify-content: flex-start; }
@@ -698,7 +702,7 @@ order: 1; /* Force Filters into the second column (200px) */
     :root {
          /* Öl-Bar und Header-Höhe etwas reduzieren */
          --oil-bar-height: 45px; 
-         --header-stack-height: 85px; 
+         --header-stack-height: 83px; 
     }
     .detail-content { flex-direction: row; gap: 40px; }
     .detail-image-section { flex: 1; }
@@ -734,8 +738,8 @@ order: 1; /* Force Filters into the second column (200px) */
     #floating-header h1 { 
     flex-grow: 1; 
     text-align: center; 
-    font-size: 1.2em; /* <--- This is the conflicting rule! */
-    font-weight: bold; 
+    font-size: 1.3em; /* <--- This is the conflicting rule! */
+    font-weight: normal; 
     margin: 0; 
     }
     /* Reduce button text size */
@@ -744,10 +748,6 @@ order: 1; /* Force Filters into the second column (200px) */
         padding: 5px 2px; /* Adjust padding for smaller text */
     }
     
-    /* Ensure header links are not too large */
-    .nav-links a {
-        font-size: 1.0rem;
-    }
     .slide-content p {
         font-size: 0.8rem !important; 
         margin-bottom: 8px;
@@ -955,7 +955,7 @@ order: 1; /* Force Filters into the second column (200px) */
 .product-brand {
     font-size: 1.2em; 
     font-weight: 1000;
-    color: firebrick; 
+    color: rgb(25, 15, 15); 
     margin-bottom: 5px; /* Tighter spacing */
     text-align: center; /* Enforce centering */
     font-family: serif;
@@ -971,16 +971,17 @@ order: 1; /* Force Filters into the second column (200px) */
 /* Change the button class from add-to-cart-btn to view-product-btn */
 .view-product-btn {
     /* Use the same style as the old button, just changing the name */
-    background-color: brown;
-    color: white;
-    border: none;
-    padding: 3px 5px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 900;
-    transition: background-color 0.2s;
-    width: 60%; /* Make it full width for prominence */
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 3px 5px !important;
+    background-color: rgb(42, 183, 54);
+    color: white !important;
+    border: none !important;
+    border-radius: 20px !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    width: 60% !important; /* Make it full width for prominence */
+    transition: all 0.3s ease !important;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
 }
 
 .view-product-btn:hover {
@@ -1086,7 +1087,7 @@ order: 1; /* Force Filters into the second column (200px) */
 /* Info Section */
 .brand-badge { color: #888; letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; }
 .pdp-info h1 { font-size: 2.8rem; margin: 10px 0; font-weight: 900; line-height: 1.1; }
-.price-section .amount { font-size: 2rem; font-weight: 700; color: firebrick; }
+.price-section .amount { font-size: 2rem; font-weight: 700; color: rgb(16, 184, 30); }
 
 .divider { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
 
@@ -1166,3 +1167,136 @@ order: 1; /* Force Filters into the second column (200px) */
     border: 3px solid #b22222 !important;
 }
 
+/*--------------------------------------Footer for the main page ---------------*/
+
+/* --- FOOTER & FEATURES STYLING --- */
+.brand-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 40px 5%;
+    background: #fff;
+    border-top: 1px solid #eee;
+    margin-top: 50px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.feature-item i {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.feature-text h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.feature-text p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #666666;
+}
+
+.main-footer {
+    background: #121212; /* Deep charcoal - softer than pure black */
+    color: #f1f1f1;      /* Off-white text for better readability */
+    padding: 60px 5% 20px;
+    border-top: 3px solid var(--primary-color); /* Adds a firebrick line to tie in your brand */
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-brand img {
+    height: 100px; /* Increased height slightly for better visibility */
+    width: auto;
+    margin-bottom: 30px;
+    display: block; /* Ensures it treats it as a block element */
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li { margin-bottom: 10px; }
+
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.footer-links a:hover { color: var(--primary-color); }
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-icons a {
+    color: #fff;
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+.social-icons a:hover { color: var(--primary-color); }
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #222; /* Very subtle divider */
+    font-size: 0.8rem;
+    color: #777;
+}
+
+/* RTL Support for Footer */
+[dir="rtl"] .feature-item {
+    text-align: right;
+}
+[dir="rtl"] .footer-bottom {
+    direction: ltr !important;
+    text-align: center !important; /* Keep it centered as per your design */
+}
+/*----------------Recommendations--------------*/
+
+/* Container for the recommendation section */
+.pdp-recommendations {
+    margin-top: 40px;
+    padding: 20px;
+    border-top: 1px solid #eee;
+}
+.recommendation-header {
+    font-weight: auto;
+    font-size: 20px;
+}
+
+/* The grid that forces 2 products per row */
+.recommendation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* This creates the 2-column layout */
+    gap: 15px;
+    padding-top: 20px;
+}
+
+/* Adjusting the reused class slightly for the small screen of the PDP */
+.recommendation-grid .product-card {
+    width: 100%; /* Ensures it fills half the screen */
+    margin: 0;
+    box-shadow: none; /* Optional: makes it look cleaner in the overlay */
+    border: 1px solid #f0f0f0;
+}
