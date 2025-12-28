@@ -145,7 +145,7 @@ const translations = {
         "footer-return-desc": "ضمان استرداد الأموال خلال 30 يومًا",
         "footer-support-title": "دعم 24/7",
         "footer-support-desc": "دعم فني مباشر على مدار اليوم",
-        "footer-about": "نوفر أفضل أحذية السنيكرز الأصلية وعالية الجودة منذ عام 2020.",
+        "footer-about": "نوفر أفضل أحذية السنيكرز الأصلية وعالية الجودة.",
         "footer-links-title": "روابط سريعة",
         "footer-social-title": "تابعنا على",
         "recommended-title": "منتجات قد تعجبك",

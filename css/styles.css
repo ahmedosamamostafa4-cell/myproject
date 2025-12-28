@@ -1,9 +1,9 @@
 /* --- Root Variables are defined here for simplicity, although they could be in a separate _variables.css file --- */
 :root {
     --peej-color: #f7ede3;
-    --primary-color: firebrick; /* Orange Accent */
+    --primary-color: #537272; /* Orange Accent */
     --secondary-color: #333; /* Dark Text */
-    --oil-color-dark: #384236; /* Dark Olive Green */
+    --oil-color-dark: #5b6d6d; /* Dark Olive Green */
     --content-bg: #f7f7f7; /* Light background for content area */
     --nav-bg: white;
     /* Define specific heights for calculation */
@@ -1220,7 +1220,7 @@ body.menu-active #off-canvas-menu {
 
 .feature-item i {
     font-size: 2rem;
-    color: var(--primary-color);
+    color: firebrick;
 }
 
 .feature-text h4 {
@@ -1239,7 +1239,7 @@ body.menu-active #off-canvas-menu {
     background: #121212; /* Deep charcoal - softer than pure black */
     color: #f1f1f1;      /* Off-white text for better readability */
     padding: 60px 5% 20px;
-    border-top: 3px solid var(--primary-color); /* Adds a firebrick line to tie in your brand */
+    border-top: 3px solid firebrick; /* Adds a firebrick line to tie in your brand */
 }
 
 .footer-container {
