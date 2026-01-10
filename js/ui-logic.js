@@ -309,10 +309,15 @@ function renderRecommendations(currentProductId) {
     grid.innerHTML = otherProducts.map(product => {
         const t = (key) => (translations[currentLang] && translations[currentLang][key]) || key;
         
+        const hasDiscount = product.category === 'Offers'; // Logic for identifying offers
+        const originalPrice = product.original_price || (product.price * 1.2).toFixed(2); // Example fallback
+        const isOffer = product.category === 'Offers';
         // Reusing the EXACT classes from your inventory.js
-        return `
+// Inside renderProducts function in ui-logic.js
+return `
             <div class="product-card" data-product-id="${product.id}">
                 <div class="product-image-container">
+                    ${isOffer ? `<span class="discount-badge">OFFER</span>` : ''}
                     <img src="${product.img || 'path/to/placeholder.jpg'}">
                 </div>
                 <div class="product-details">
@@ -321,9 +326,16 @@ function renderRecommendations(currentProductId) {
                         <h3 class="product-name">${product.size}" ${product.name}</h3>
                     </div>
                     <p class="product-brand">${product.brand}</p>
-                    <p class="product-spec">
-                        <span class="product-price">L.E ${(product.price || 0).toFixed(2)}</span>
-                    </p>
+                    
+                    <div class="price-box">
+                        ${isOffer ? `
+                            <div class="original-price">${(product.price * 1.3).toFixed(2)}L.E</div>
+                            <div class="discounted-price">${(product.price || 0).toFixed(2)}L.E</div>
+                        ` : `
+                            <div class="product-price">${(product.price || 0).toFixed(2)}L.E</div>
+                        `}
+                    </div>
+
                     <div class="price-and-actions">
                         <button class="view-product-btn" onclick="openProductDetail('${product.id}')">
                             ${t('VIEW >')} 

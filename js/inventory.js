@@ -1,6 +1,9 @@
 // --- INVENTORY & FILTERING LOGIC ---
 let products = [];
 
+
+// Add this to inventory.js
+
 async function fetchProductsFromSupabase() {
     // This checks if 'supabase' object is initialized from index.html
     if (typeof supabaseClient === 'undefined') {
@@ -16,6 +19,7 @@ async function fetchProductsFromSupabase() {
             .select('*'); // Select all columns
 
         if (error) {
+            console.error("Error fetching products:", error);
             throw error;
         }
 
@@ -35,7 +39,8 @@ async function fetchProductsFromSupabase() {
             img2: doc.img2,
             img3: doc.img3,
         }));
-
+        generateDynamicFilters();
+        generateBrandFilters();
         // After successfully fetching, call the function to display products
         filterProducts(); 
 
@@ -50,6 +55,66 @@ async function fetchProductsFromSupabase() {
 // NOTE: The rest of the functions in this file (changeQuantity, renderProducts, filterProducts) 
 // should remain the same.
 
+
+function generateDynamicFilters() {
+    const sizeContainer = document.getElementById('dynamic-size-filters');
+    
+    // Safety check: If the element is missing, log a warning and stop
+    if (!sizeContainer) {
+        console.warn("Could not find 'dynamic-size-filters' element in HTML.");
+        return; 
+    }
+
+    // Extract unique sizes from the products array
+    const uniqueSizes = [...new Set(products.map(p => p.size))]
+        .filter(size => size != null && size !== "")
+        .sort((a, b) => a - b);
+
+    sizeContainer.innerHTML = ''; // Clear old content
+
+    uniqueSizes.forEach(size => {
+        const div = document.createElement('div');
+        div.className = 'filter-option';
+        div.innerHTML = `
+            <input type="checkbox" class="filter-checkbox" id="filter-size-${size}" 
+                   name="size" value="${size}" onchange="filterProducts()">
+            <label for="filter-size-${size}">${size}</label>
+        `;
+        sizeContainer.appendChild(div);
+    });
+}
+
+
+function generateBrandFilters() {
+    const brandContainer = document.getElementById('dynamic-brand-filters');
+    
+    // Safety check to prevent "innerHTML of null" errors
+    if (!brandContainer) return; 
+
+    // 1. Get unique brands from the products array
+    const uniqueBrands = [...new Set(products.map(p => p.brand))]
+        .filter(brand => brand != null && brand !== "")
+        .sort(); // Sorts them A-Z
+
+    // 2. Clear the container
+    brandContainer.innerHTML = '';
+
+    // 3. Create a checkbox for each unique brand found
+    uniqueBrands.forEach(brand => {
+        const div = document.createElement('div');
+        div.className = 'filter-option';
+        div.innerHTML = `
+            <input type="checkbox" 
+                   class="filter-checkbox" 
+                   id="filter-brand-${brand}" 
+                   name="brand" 
+                   value="${brand}" 
+                   onchange="filterProducts()">
+            <label for="filter-brand-${brand}">${brand}</label>
+        `;
+        brandContainer.appendChild(div);
+    });
+}
 /**
  * Renders the products onto the main display area (#product-results).
  * (Updated to organize info and use a 'View Product' button)
@@ -80,29 +145,36 @@ function renderProducts(productsToDisplay) {
         const buttonDisabled = outOfStock ? 'disabled' : '';
         const productName = product.name || 'Untitled Product';
 
-        return `
+        const hasDiscount = product.category === 'Offers'; // Logic for identifying offers
+        const originalPrice = product.original_price || (product.price * 1.2).toFixed(2); // Example fallback
+        const isOffer = product.category === 'Offers';
+        // Reusing the EXACT classes from your inventory.js
+// Inside renderProducts function in ui-logic.js
+return `
             <div class="product-card" data-product-id="${product.id}">
                 <div class="product-image-container">
+                    ${isOffer ? `<span class="discount-badge">OFFER</span>` : ''}
                     <img src="${product.img || 'path/to/placeholder.jpg'}">
                 </div>
                 <div class="product-details">
                     <div class="gender"><h3 class="product-name">${product.gender}</h3></div>
                     <div class="size-and-name">
-                        <h3 class="product-name">${product.size}" ${productName}</h3>
+                        <h3 class="product-name">${product.size}" ${product.name}</h3>
                     </div>
                     <p class="product-brand">${product.brand}</p>
-                    <p class="product-spec">
-                        <span class="product-price">L.E ${(product.price || 0).toFixed(2)}</span>
-                    </p>
+                    
+                    <div class="price-box">
+                        ${isOffer ? `
+                            <div class="original-price">${(product.price * 1.1).toFixed(2)}L.E</div>
+                            <div class="discounted-price">${(product.price || 0).toFixed(2)}L.E</div>
+                        ` : `
+                            <div class="product-price">${(product.price || 0).toFixed(2)}L.E</div>
+                        `}
+                    </div>
 
                     <div class="price-and-actions">
-                        <button 
-                            class="view-product-btn" 
-                            data-product-id="${product.id}" 
-                            onclick="openProductDetail('${product.id}')"
-                            ${buttonDisabled}
-                        >
-                            ${buttonText} 
+                        <button class="view-product-btn" onclick="openProductDetail('${product.id}')">
+                            ${t('VIEW >')} 
                         </button>
                     </div>
                 </div>

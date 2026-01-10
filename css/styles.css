@@ -352,7 +352,7 @@ body.menu-active #off-canvas-menu {
 .product-card {
     background-color: white; /* Use the new soft color */
     border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Stronger, softer shadow */
     overflow: hidden;
     display: flex;
     flex-direction: column; /* Stack image and details vertically */
@@ -363,7 +363,7 @@ body.menu-active #off-canvas-menu {
 
 /* Hover effect */
 .product-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Makes the product feel interactive */
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 
 }
@@ -372,15 +372,20 @@ body.menu-active #off-canvas-menu {
 .product-image-container {
     width: 100%;
     height: 200px; /* Fixed height for consistency */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
     position: relative;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    
 }
 
 .product-image-container img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures image fills container without distortion */
+    object-fit: contain; /* Ensures image fills container without distortion */
+    object-position: center;
 }
 
 /* Product details section (the bottom half) */
@@ -404,13 +409,53 @@ body.menu-active #off-canvas-menu {
 .product-price {
     display: block;
     text-align: center !important;
-    margin-top: 10px;
-    margin-bottom: 5px;
     font-size: 1.1em; 
-    font-weight: 800; /* Very bold */
-    color: #666; /* Highlight color */
+    font-weight: 400; /* Very bold */
 }
 
+/* Container for prices to stack them nicely */
+.price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* The old price with a line through it */
+.original-price {
+    font-size: 0.85rem;
+    color: #a0a0a0;
+    /* This creates the strike-through effect */
+    text-decoration: line-through !important; 
+    display: block; /* Puts it on its own line */
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+/* The new, attractive discounted price */
+.discounted-price {
+    font-size: 1.4rem;
+    color: #e63946; /* High-contrast red */
+    font-weight: 800;
+    display: block; /* Puts it on its own line */
+    text-align: center;
+}
+/* Optional: Add a "Sale" badge on the image */
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #e63946;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/*--------------------------------------------------------------------*/
 /* Button style refinement */
 .add-to-cart-btn {
     background-color: var(--oil-color-dark);
@@ -1160,7 +1205,7 @@ body.menu-active #off-canvas-menu {
 
 .pdp-add-to-cart {
     width: 100%;
-    background: #000;
+    background: #007BFF;
     color: #fff;
     padding: 20px;
     border-radius: 40px;
