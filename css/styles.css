@@ -1244,6 +1244,53 @@ body.menu-active #off-canvas-menu {
     border: 3px solid #b22222 !important;
 }
 
+/*-------------------------------------Sold Out----------------------------------*/
+
+
+/* Container must be relative for the stamp to position correctly */
+.product-image-container {
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* The Sold Out Stamp Styling */
+.sold-out-stamp {
+    position: absolute;
+    top: 5px;       /* Adjust based on where your name starts */
+    left: -45px;
+    transform: rotate(-30deg);
+    background-color: transparent; /* Professional red */
+    color: rgb(5, 2, 2);
+    padding: 8px 40px;
+    font-size: 1rem;
+    font-weight: 700;
+    border: 1px double white; /* Double line border for a 'stamp' effect */
+    border-radius: 9px;
+    z-index: 10;
+    pointer-events: none; /* Allows clicks to pass through if needed */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Grayscale effect for the shoe image when sold out */
+.sold-out-img {
+    filter: grayscale(100%) opacity(0.7);
+}
+
+/* Styling the disabled button */
+.disabled-btn {
+    background-color: #e0e0e0 !important;
+    color: #888 !important;
+    cursor: not-allowed;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
 /*--------------------------------------Footer for the main page ---------------*/
 
 /* --- FOOTER & FEATURES STYLING --- */

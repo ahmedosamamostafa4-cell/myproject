@@ -394,7 +394,7 @@ async function placeOrder(e) {
         let dbPromise;
 
         // **CRITICAL LOGIC: Conditional UPDATE or DELETE**
-        if (newStock > 0) {
+        if (newStock >= 0) {
             // Stock remains, perform an UPDATE
             dbPromise = supabaseClient
                 .from('products')
@@ -402,10 +402,10 @@ async function placeOrder(e) {
                 .eq('id', productInInventory.id);
         } else {
             // Stock is 0 or less, perform a DELETE
-            dbPromise = supabaseClient
+            /*dbPromise = supabaseClient
                 .from('products')
                 .delete()
-                .eq('id', productInInventory.id);
+                .eq('id', productInInventory.id);*/
         }
         
         actions.push({

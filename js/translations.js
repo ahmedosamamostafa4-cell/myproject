@@ -129,6 +129,7 @@ const translations = {
         "contact-slogan": "نحن هنا لمساعدتك دائمًا في العثور على حذائك المثالي.",
         "social-title": "تواصل معنا عبر وسائل التواصل",
         "VIEW >": "عرض المنتج",
+        "OUT OF STOCK": "نفدت الكمية",
         "browse-brands": "الماركه",
         "size": "المقاس",
         "pdp-add-to-bag": "أضف إلى العربه",

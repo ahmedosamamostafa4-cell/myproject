@@ -3,6 +3,11 @@ let products = [];
 
 
 // Add this to inventory.js
+// Inside your main init function or at the bottom of fetchProductsFromSupabase
+async function initApp() {
+    await fetchProductsFromSupabase(); // Load initial data
+    setupRealtimeSubscription();       // Start listening for live changes
+}
 
 async function fetchProductsFromSupabase() {
     // This checks if 'supabase' object is initialized from index.html
@@ -42,7 +47,7 @@ async function fetchProductsFromSupabase() {
         generateDynamicFilters();
         generateBrandFilters();
         // After successfully fetching, call the function to display products
-        filterProducts(); 
+        filterProducts();
 
     } catch (error) {
         console.error("Error fetching documents from Supabase: ", error);
@@ -58,7 +63,9 @@ async function fetchProductsFromSupabase() {
 
 function generateDynamicFilters() {
     const sizeContainer = document.getElementById('dynamic-size-filters');
-    
+    if (sizeContainer && sizeContainer.children.length > 0) {
+        return; 
+    }
     // Safety check: If the element is missing, log a warning and stop
     if (!sizeContainer) {
         console.warn("Could not find 'dynamic-size-filters' element in HTML.");
@@ -86,8 +93,11 @@ function generateDynamicFilters() {
 
 
 function generateBrandFilters() {
-    const brandContainer = document.getElementById('dynamic-brand-filters');
     
+    const brandContainer = document.getElementById('dynamic-brand-filters');
+    if (brandContainer && brandContainer.children.length > 0) {
+        return; 
+    }
     // Safety check to prevent "innerHTML of null" errors
     if (!brandContainer) return; 
 
@@ -151,9 +161,10 @@ function renderProducts(productsToDisplay) {
         // Reusing the EXACT classes from your inventory.js
 // Inside renderProducts function in ui-logic.js
 return `
-            <div class="product-card" data-product-id="${product.id}">
+            <div class="product-card" ${product.stock <= 0 ? 'sold-out-card' : ''}" data-product-id="${product.id}">
                 <div class="product-image-container">
                     ${isOffer ? `<span class="discount-badge">OFFER</span>` : ''}
+                    ${product.stock <= 0 ? `<div class="sold-out-stamp">Sold Out</div>` : ''}
                     <img src="${product.img || 'path/to/placeholder.jpg'}">
                 </div>
                 <div class="product-details">
@@ -165,7 +176,7 @@ return `
                     
                     <div class="price-box">
                         ${isOffer ? `
-                            <div class="original-price">${(product.price * 1.1).toFixed(2)}L.E</div>
+                            <div class="original-price">${(product.price * 1.15).toFixed(2)}L.E</div>
                             <div class="discounted-price">${(product.price || 0).toFixed(2)}L.E</div>
                         ` : `
                             <div class="product-price">${(product.price || 0).toFixed(2)}L.E</div>
@@ -173,9 +184,14 @@ return `
                     </div>
 
                     <div class="price-and-actions">
-                        <button class="view-product-btn" onclick="openProductDetail('${product.id}')">
+                    ${product.stock <= 0 ? 
+                    `<button class="disabled-btn" disabled>
+                    ${t('OUT OF STOCK')}
+                    </button>` : 
+                    `<button class="view-product-btn" onclick="openProductDetail('${product.id}')">
                             ${t('VIEW >')} 
-                        </button>
+                        </button>`
+                    }
                     </div>
                 </div>
             </div>
@@ -190,6 +206,54 @@ return `
     }
 }
 
+function setupRealtimeSubscription() {
+    supabaseClient
+        .channel('schema-db-changes')
+        .on(
+            'postgres_changes',
+            {
+                event: 'UPDATE', // Listen specifically for stock/price updates
+                schema: 'public',
+                table: 'products'
+            },
+(payload) => {
+    // 1. SILENTLY update the local data array
+    const index = products.findIndex(p => p.id === payload.new.id);
+    if (index !== -1) {
+        products[index] = { ...products[index], ...payload.new };
+    }
+
+    // 2. VISUALLY update only the specific card if it exists
+    const card = document.querySelector(`.product-card[data-product-id="${payload.new.id}"]`);
+    
+    if (card) {
+        // If stock is now 0, add the Sold Out effects
+        if (payload.new.stock <= 0) {
+            const imgContainer = card.querySelector('.product-image-container');
+            
+            // Only add if not already there to prevent duplicates
+            if (imgContainer && !imgContainer.querySelector('.sold-out-stamp')) {
+                imgContainer.insertAdjacentHTML('beforeend', '<div class="sold-out-stamp">SOLD OUT</div>');
+                imgContainer.querySelector('img')?.classList.add('sold-out-img');
+                
+                const btn = card.querySelector('.view-product-btn');
+                if (btn) {
+                    btn.outerHTML = `<button class="disabled-btn" disabled>OUT OF STOCK</button>`;
+                }
+            }
+        } else {
+            // OPTIONAL: If stock was added back, remove sold-out effects
+            card.querySelector('.sold-out-stamp')?.remove();
+            card.querySelector('img')?.classList.remove('sold-out-img');
+        }
+    }
+    
+    // CRITICAL: Ensure you ARE NOT calling generateBrandFilters() 
+    // or filterProducts() here. That is what resets your checkboxes.
+}
+        )
+        .subscribe();
+}
 
 
 async function filterProducts() {
@@ -199,7 +263,7 @@ async function filterProducts() {
     // 2. Wenn keine Filter aktiv sind, zeige alle Produkte (nach dem Mischen)
     if (checkboxes.length === 0) {
         // Randomly shuffle products for a "New/Random Products" feel
-        const shuffledProducts = [...products].sort(() => 0.5 - Math.random());
+        const shuffledProducts = [...products].sort((a, b) => a.id - b.id);
         renderProducts(shuffledProducts);
         // Stelle sicher, dass der Zähler aktualisiert wird
         const countHeader = document.getElementById('products-count-header');
