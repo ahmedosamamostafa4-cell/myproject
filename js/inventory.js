@@ -176,7 +176,7 @@ return `
                     
                     <div class="price-box">
                         ${isOffer ? `
-                            <div class="original-price">${(product.price * 1.15).toFixed(2)}L.E</div>
+                            <div class="original-price">${(product.price + 300).toFixed(2)}L.E</div>
                             <div class="discounted-price">${(product.price || 0).toFixed(2)}L.E</div>
                         ` : `
                             <div class="product-price">${(product.price || 0).toFixed(2)}L.E</div>
