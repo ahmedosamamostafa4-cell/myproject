@@ -315,9 +315,10 @@ function renderRecommendations(currentProductId) {
         // Reusing the EXACT classes from your inventory.js
 // Inside renderProducts function in ui-logic.js
 return `
-            <div class="product-card" data-product-id="${product.id}">
+            <div class="product-card" ${product.stock <= 0 ? 'sold-out-card' : ''}" data-product-id="${product.id}">
                 <div class="product-image-container">
                     ${isOffer ? `<span class="discount-badge">OFFER</span>` : ''}
+                    ${product.stock <= 0 ? `<div class="sold-out-stamp">Sold Out</div>` : ''}
                     <img src="${product.img || 'path/to/placeholder.jpg'}">
                 </div>
                 <div class="product-details">
@@ -337,9 +338,14 @@ return `
                     </div>
 
                     <div class="price-and-actions">
-                        <button class="view-product-btn" onclick="openProductDetail('${product.id}')">
-                            ${t('VIEW >')} 
-                        </button>
+                        ${product.stock <= 0 ? 
+                        `<button class="disabled-btn" disabled>
+                        ${t('OUT OF STOCK')}
+                        </button>` : 
+                        `<button class="view-product-btn" onclick="openProductDetail('${product.id}')">
+                                ${t('VIEW >')} 
+                            </button>`
+                        }
                     </div>
                 </div>
             </div>
