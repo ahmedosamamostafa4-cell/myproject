@@ -56,3 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+        // Initial build — currentLang may already be set by translations.js
+        setTimeout(() => buildTicker(typeof currentLang !== 'undefined' ? currentLang : 'ar'), 0);
+    });
+
+    // Monkey-patch applyTranslations to rebuild ticker on language switch
+    // We do this after all scripts load
+window.addEventListener('load', () => {
+        const orig = applyTranslations;
+        applyTranslations = function(lang) {
+            orig(lang);
+            buildTicker(lang);
+        };
+        buildTicker(typeof currentLang !== 'undefined' ? currentLang : 'ar');
+    });
+

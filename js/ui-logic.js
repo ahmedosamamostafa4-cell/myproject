@@ -361,3 +361,21 @@ function closeProductDetail() {
         document.body.style.overflow = '';      // Re-enables scrolling
     }
 }
+
+/* The dynamic bar above */
+function buildTicker(lang) {
+        const track = document.getElementById('ticker-track');
+        if (!track) return;
+        const msgs = tickerMessages[lang] || tickerMessages['en'];
+        // Build one set of items
+        const itemsHTML = msgs.map(m => `<span class="ticker-item">${m}</span>${SEP}`).join('');
+        // Duplicate 3× for seamless infinite scroll
+        track.innerHTML = itemsHTML + itemsHTML + itemsHTML;
+
+        // Direction: RTL scrolls right-to-left too, but CSS handles it
+        if (lang === 'ar') {
+            track.style.animationName = 'tickerScrollRTL';
+        } else {
+            track.style.animationName = 'tickerScroll';
+        }
+    }

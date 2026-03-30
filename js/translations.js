@@ -141,7 +141,7 @@ const translations = {
         "pdp-condition": "الحاله:",
         "pdp-state": "جديد",
         "footer-shipping-title": "شحن مجاني",
-        "footer-shipping-desc": "على جميع الطلبات الأكثر من 2000 ج.م",
+        "footer-shipping-desc": "على جميع الطلبات الأكثر من 3000 ج.م",
         "footer-return-title": "إرجاع مجاني",
         "footer-return-desc": "ضمان استرداد الأموال خلال 30 يومًا",
         "footer-support-title": "دعم 24/7",
@@ -155,6 +155,26 @@ const translations = {
     }
 };
 
+    // ===== ANNOUNCEMENT TICKER =====
+    const tickerMessages = {
+        en: [
+            "THE ORIGINAL STARTS HERE",
+            "WELCOME TO ORIGINAL KICKS",
+            "WHERE ORIGINALS LIVE",
+            "YOUR TRUSTWORTHY PLACE FOR ORIGINALS",
+            "100% AUTHENTIC GUARANTEED",
+            "FREE DELIVERY ON ORDERS ABOVE 3000 L.E",
+        ],
+        ar: [
+            "الأصلي يبدأ من هنا",
+            "أهلاً في أوريجينال كيكس",
+            "حيث يعيش الأصلي",
+            "مكانك الموثوق للأحذية الأصلية",
+            "أصالة مضمونة ١٠٠٪",
+            "توصيل مجاني فوق ٣٠٠٠ ج.م",
+        ]
+    };
+    
 let currentLang = 'en';
 
 function applyTranslations(lang) {
