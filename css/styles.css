@@ -497,7 +497,7 @@ body.menu-active #off-canvas-menu {
 
 .filter-group-contextual h3 {
     font-family: var(--font-body);
-    font-size: 0.7rem;
+    font-size: 1.1rem;
     font-weight: 600;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -509,10 +509,8 @@ body.menu-active #off-canvas-menu {
 }
 
 .filter-option {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    gap: 8px;
+    display: inline-flex;
+    margin: 5;
 }
 
 .filter-option input[type="checkbox"] {
@@ -547,7 +545,7 @@ body.menu-active #off-canvas-menu {
 }
 
 .filter-option label {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     cursor: pointer;
     color: var(--ink-muted);
     transition: color 0.15s;
@@ -561,8 +559,8 @@ body.menu-active #off-canvas-menu {
 
 .compact-options {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 /* ============================================================
@@ -1771,8 +1769,8 @@ body.menu-active #off-canvas-menu {
 @media screen and (max-width: 768px) {
 
     :root {
-        --oil-bar-height:      40px;
-        --main-header-height:  58px;
+        --oil-bar-height:      38px;
+        --main-header-height:  64px;
         --header-stack-height: 98px;
     }
 
