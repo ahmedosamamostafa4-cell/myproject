@@ -229,33 +229,29 @@ function renderProductPage(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
+    // 1. Tell the CSS to hide the home page
+    document.body.classList.add('product-open');
+
+    // 2. Show the product div
     const detailView = document.getElementById('product-detail-view');
     detailView.classList.add('active');
     
-    // Scroll to top of the "new" page
-    window.scrollTo(0, 0);
+    // ... (Your existing code to fill in Name, Price, Image) ...
     
-    // ... keep your existing code here that fills in the image, price, and name ...
+    window.scrollTo(0, 0);
 }
 
 function closeProductDetail() {
-    // When they go back, remove the product ID from the URL
+    // 1. Remove the product slug from URL
     window.history.pushState({}, '', window.location.pathname);
     
-    const detailView = document.getElementById('product-detail-view');
-    detailView.classList.remove('active');
+    // 2. Show the home page again
+    document.body.classList.remove('product-open');
+    document.getElementById('product-detail-view').classList.remove('active');
 }
 
 function openProductDetail(productId) {
 
-    // 1. Update the URL without reloading the page
-    // This makes it look like: originalkick.com/?product=NMD_R1
-    const newUrl = window.location.pathname + '?product=' + productId;
-    window.history.pushState({ productId: productId }, '', newUrl);
-    
-    // 2. Run the existing logic to fill the data and show the "page"
-    renderProductPage(productId);
-/*------------------------------------------------------------------------------------------*/
     const overlay = document.querySelector('.product-detail-overlay');
     
     // This is the magic line that resets the scroll to the top
@@ -272,6 +268,16 @@ function openProductDetail(productId) {
     document.getElementById('detail-price').innerText = product.price.toFixed(2);
     document.getElementById('detail-size-val').innerText = product.size;
     document.getElementById('detail-condition-val').innerText = product.condition || 'Original';
+
+
+    // Create a "Slug": e.g., "NMD R1 Black" becomes "NMD_R1_Black"
+    const productSlug = product.name.replace(/\s+/g, '_');
+
+    // Update URL to: index.html?item=NMD_R1_Black
+    const newUrl = window.location.pathname + '?item=' + productSlug;
+    window.history.pushState({ productId: productId }, '', newUrl);
+/*------------------------------------------------------------------------------------------*/
+
 
     const mainImg = document.getElementById('detail-main-img');
     if (mainImg) {
