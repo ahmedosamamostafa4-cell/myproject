@@ -78,4 +78,39 @@ window.addEventListener('load', () => {
     }
 });
 
+// This event triggers every time the user clicks Chrome's Back or Forward buttons
+window.addEventListener('popstate', (event) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('product');
+
+    if (productId) {
+        // If the URL has a product ID, show the product
+        if (typeof openProductDetail === 'function') {
+            openProductDetail(productId);
+        }
+    } else {
+        // If the product ID is GONE (Back Button pressed), reset the whole view
+        
+        // 1. Show all hidden home elements
+        const homeSections = ['.ticker-wrap', 'header', '#hero-section', '.product-section', 'footer'];
+        homeSections.forEach(selector => {
+            const el = document.querySelector(selector);
+            if (el) {
+                // Restore grid for products, block for others
+                el.style.display = (selector === '.product-section') ? 'grid' : 'block';
+            }
+        });
+
+        // 2. Hide the product detail overlay
+        const detailView = document.getElementById('product-detail-view');
+        if (detailView) {
+            detailView.classList.remove('active');
+            detailView.style.display = 'none';
+        }
+
+        // 3. Unfreeze the scroll
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+    }
+});
 

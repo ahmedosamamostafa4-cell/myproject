@@ -1098,7 +1098,7 @@ body.menu-active #off-canvas-menu {
     flex-direction: column;
     overflow-y: auto;
     padding-top: 0 !important;
-    padding-bottom: 80px !important;
+    padding-bottom: 120px !important;
 }
 /* Add this class to your CSS */
 body.product-page-active #hero-section,
