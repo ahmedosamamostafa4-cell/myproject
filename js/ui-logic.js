@@ -262,7 +262,6 @@ function closeProductDetail() {
 
     // 4. Reset scroll and overflow
     document.body.style.overflow = '';
-    window.scrollTo(0, 0);
 }
 
 function openProductDetail(productId) {
