@@ -207,10 +207,55 @@ function updateMainImage(src) {
     });
 }
 
+// This listens for the browser's Back and Forward buttons
+window.addEventListener('popstate', (event) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('product');
+
+    if (productId) {
+        renderProductPage(productId);
+    } else {
+        // If no product in URL, hide the product view and show the home page
+        const detailView = document.getElementById('product-detail-view');
+        if (detailView) detailView.classList.remove('active');
+    }
+});
+
+
+/*------------------------------------------------------------------------------------------*/
 // Update the "Add to Cart" Logic inside openProductDetail
 
+function renderProductPage(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const detailView = document.getElementById('product-detail-view');
+    detailView.classList.add('active');
+    
+    // Scroll to top of the "new" page
+    window.scrollTo(0, 0);
+    
+    // ... keep your existing code here that fills in the image, price, and name ...
+}
+
+function closeProductDetail() {
+    // When they go back, remove the product ID from the URL
+    window.history.pushState({}, '', window.location.pathname);
+    
+    const detailView = document.getElementById('product-detail-view');
+    detailView.classList.remove('active');
+}
 
 function openProductDetail(productId) {
+
+    // 1. Update the URL without reloading the page
+    // This makes it look like: originalkick.com/?product=NMD_R1
+    const newUrl = window.location.pathname + '?product=' + productId;
+    window.history.pushState({ productId: productId }, '', newUrl);
+    
+    // 2. Run the existing logic to fill the data and show the "page"
+    renderProductPage(productId);
+/*------------------------------------------------------------------------------------------*/
     const overlay = document.querySelector('.product-detail-overlay');
     
     // This is the magic line that resets the scroll to the top

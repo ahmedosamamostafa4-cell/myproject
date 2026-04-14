@@ -72,3 +72,17 @@ window.addEventListener('load', () => {
         buildTicker(typeof currentLang !== 'undefined' ? currentLang : 'ar');
     });
 
+// Check the URL for a product ID
+const urlParams = new URLSearchParams(window.location.search);
+const productIdFromUrl = urlParams.get('product');
+
+// If a product ID exists in the link, wait for products to load then open it
+if (productIdFromUrl) {
+    // We use a small interval to ensure Supabase has finished loading 'products'
+    const checkLoad = setInterval(() => {
+        if (typeof products !== 'undefined' && products.length > 0) {
+            renderProductPage(productIdFromUrl);
+            clearInterval(checkLoad);
+        }
+    }, 100);
+}
