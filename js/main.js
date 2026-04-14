@@ -64,28 +64,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Monkey-patch applyTranslations to rebuild ticker on language switch
     // We do this after all scripts load
 window.addEventListener('load', () => {
-        const orig = applyTranslations;
-        applyTranslations = function(lang) {
-            orig(lang);
-            buildTicker(lang);
-        };
-        buildTicker(typeof currentLang !== 'undefined' ? currentLang : 'ar');
-    });
+    const params = new URLSearchParams(window.location.search);
+    const pId = params.get('product');
 
-const urlParams = new URLSearchParams(window.location.search);
-const itemSlug = urlParams.get('item');
-
-if (itemSlug) {
-    const checkLoad = setInterval(() => {
-        if (typeof products !== 'undefined' && products.length > 0) {
-            // Convert slug back to search (replace _ with space)
-            const productName = itemSlug.replace(/_/g, ' ');
-            const product = products.find(p => p.name === productName);
-            
-            if (product) {
-                renderProductPage(product.id);
+    if (pId) {
+        // Wait for products to load from Supabase
+        const interval = setInterval(() => {
+            if (products && products.length > 0) {
+                openProductDetail(pId);
+                clearInterval(interval);
             }
-            clearInterval(checkLoad);
-        }
-    }, 100);
-}
+        }, 100);
+    }
+});
+
+

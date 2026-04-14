@@ -1099,10 +1099,27 @@ body.menu-active #off-canvas-menu {
     overflow-y: auto;
     padding-top: 0 !important;
 }
-
-.product-detail-overlay.active {
-    display: flex;
+/* Add this class to your CSS */
+body.product-page-active #hero-section,
+body.product-page-active .product-section,
+body.product-page-active footer {
+    display: none !important;
 }
+
+/* Ensure the detail view covers everything */
+.product-detail-overlay.active {
+    display: block !important;
+    position: fixed !important; /* Fixed stays in front */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Takes full screen height */
+    background: var(--smoke);
+    z-index: 9999;
+    overflow-y: auto; /* This allows ONLY the product to scroll */
+    -webkit-overflow-scrolling: touch; /* Smooth scroll for mobile */
+}
+
 
 /* PDP top bar */
 .oil-bar-style {

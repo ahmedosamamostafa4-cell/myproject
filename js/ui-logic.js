@@ -242,12 +242,27 @@ function renderProductPage(productId) {
 }
 
 function closeProductDetail() {
-    // 1. Remove the product slug from URL
+    // 1. Remove the product from the URL (updates history)
     window.history.pushState({}, '', window.location.pathname);
-    
-    // 2. Show the home page again
-    document.body.classList.remove('product-open');
-    document.getElementById('product-detail-view').classList.remove('active');
+
+    // 2. Bring back the main site
+    const hero = document.getElementById('hero-section');
+    const shop = document.querySelector('.product-section');
+    const footer = document.querySelector('footer');
+
+    if(hero) hero.style.display = 'block';
+    if(shop) shop.style.display = 'grid'; 
+    if(footer) footer.style.display = 'block';
+
+    // 3. Hide the detail view
+    const detailView = document.getElementById('product-detail-view');
+    if (detailView) {
+        detailView.classList.remove('active');
+    }
+
+    // 4. Reset scroll and overflow
+    document.body.style.overflow = '';
+    window.scrollTo(0, 0);
 }
 
 function openProductDetail(productId) {
@@ -270,12 +285,34 @@ function openProductDetail(productId) {
     document.getElementById('detail-condition-val').innerText = product.condition || 'Original';
 
 
-    // Create a "Slug": e.g., "NMD R1 Black" becomes "NMD_R1_Black"
-    const productSlug = product.name.replace(/\s+/g, '_');
-
-    // Update URL to: index.html?item=NMD_R1_Black
-    const newUrl = window.location.pathname + '?item=' + productSlug;
+// 1. Update URL for Back Button support
+    const newUrl = window.location.pathname + '?product=' + productId;
     window.history.pushState({ productId: productId }, '', newUrl);
+
+    // 2. HIDE THE HOME PAGE SECTIONS
+    // This removes the slider, the grid of other products, and the ticker
+    const hero = document.getElementById('hero-section');
+    const shop = document.querySelector('.product-section'); // The grid container
+    const ticker = document.querySelector('.ticker-wrap');
+    const footer = document.querySelector('footer');
+
+    if(hero) hero.style.display = 'none';
+    if(shop) shop.style.display = 'none';
+    if(ticker) ticker.style.display = 'none';
+    if(footer) footer.style.display = 'none';
+
+    // 3. SHOW ONLY THE PRODUCT DETAIL
+    const detailView = document.getElementById('product-detail-view');
+    detailView.classList.add('active');
+
+    // THIS PREVENTS THE DOUBLE SCROLL:
+    document.body.style.overflow = 'hidden'; 
+    
+    // Ensure the product view starts at the top
+    detailView.scrollTo(0, 0);
+
+    
+    // (Existing data population code stays here)
 /*------------------------------------------------------------------------------------------*/
 
 
@@ -343,7 +380,6 @@ function openProductDetail(productId) {
     const detailOverlay = document.getElementById('product-detail-view');
     detailOverlay.scrollTop = 0; 
     detailOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
     
 }
 
@@ -404,14 +440,7 @@ return `
     }).join('');
 }
 
-function closeProductDetail() {
-    console.log("Debug: Closing product detail view");
-    const detailView = document.getElementById('product-detail-view');
-    if (detailView) {
-        detailView.classList.remove('active'); // Removes the 'display: flex'
-        document.body.style.overflow = '';      // Re-enables scrolling
-    }
-}
+
 
 /* The dynamic bar above */
 function buildTicker(lang) {
