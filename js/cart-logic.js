@@ -7,6 +7,27 @@ let cart = [];
 // stagedCart: The temporary list of items waiting for confirmation via the header icon click
 let stagedCart = []; 
 
+const shippingFees = [
+        0, // no city
+        65, // Cairo / Giza
+        70, // Alex
+        85, // Gharbeya
+        85, // Sharqia
+        85, // Dakahlya
+        100, // Others
+
+    ];
+
+const Cities = [
+        'no city',
+        'Cairo / Giza',
+        'Alex',
+        'Gharbeya',
+        'Sharqia',
+        'Dakahlya',
+        ' Others'
+
+    ];
 
 /**
  * Calculates the total number of items (quantities combined) in the STAGED cart
@@ -291,17 +312,6 @@ function getStagedCartTotal() {
         return total + (item.price * item.quantity);
     }, 0);
 
-    const shippingFees = [
-        0, // no city
-        65, // Cairo / Giza
-        70, // Alex
-        85, // Gharbeya
-        85, // Sharqia
-        85, // Dakahlya
-        100, // Others
-
-    ];
-
     const shippingFee = subtotal > 3000 ? 0 : (shippingFees[customerDistrict] ?? 0);
 
     document.getElementById('deliveryFeeText').textContent =
@@ -455,6 +465,7 @@ async function placeOrder(e) {
     const customerPhone1 = document.getElementById('checkout-phone1').value;
     const customerPhone2 = document.getElementById('checkout-phone2').value;
     const customerAddress = document.getElementById('checkout-address').value;
+    const customerCity = document.getElementById('checkout-district').value;
 
 
     // Generate a unique ID (NOTE: Using .toISOString() for better database compatibility if using 'text')
@@ -467,10 +478,10 @@ async function placeOrder(e) {
         Name: customerName,
         Phone_No_1 : customerPhone1,
         Phone_No_2 : customerPhone2,
-        Address: customerAddress,
+        Address: customerAddress + Cities[customerCity],
         Item: item.name,
         Quantity: item.quantity,
-        Cost: item.quantity * item.price // Cost is total cost of this line item
+        Cost: (item.quantity * item.price) + shippingFees[customerCity] // Cost is total cost of this line item
     }));
     
     // ----------------------------------------------------------------------
