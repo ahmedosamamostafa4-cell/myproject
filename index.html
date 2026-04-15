@@ -146,22 +146,47 @@
 
                 <!-- Personal Information Fields -->
                 <div class="space-y-4 mb-6">
-                    <div>
-                        <label for="checkout-name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                        <input type="text" id="checkout-name" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm p-3 focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label for="checkout-phone1" class="block text-sm font-medium text-gray-700">Phone Number</label>
-                        <input type="tel" id="checkout-phone1" required 
-                        minlength="11" maxlength="11"
-                        class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm p-3 focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label for="checkout-phone2" class="block text-sm font-medium text-gray-700">Another Phone Number</label>
-                        <input type="tel" id="checkout-phone2" required
-                        minlength="11" maxlength="11" 
-                        class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm p-3 focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
+                    <!-- Name -->
+                <div>
+                    <label for="checkout-name" class="block text-base font-bold text-gray-800">
+                        Full Name
+                    </label>
+                    <input
+                        type="text"
+                        id="checkout-name"
+                        required
+                        class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg font-semibold text-gray-900 focus:border-indigo-500 focus:ring-indigo-500"
+                    >
+                </div>
+                <!-- phone1 -->
+                <div>
+                    <label for="checkout-phone1" class="block text-base font-bold text-gray-800">
+                        Phone Number
+                    </label>
+                    <input
+                        type="tel"
+                        id="checkout-phone1"
+                        required
+                        minlength="11"
+                        maxlength="11"
+                        class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg font-semibold text-gray-900 focus:border-indigo-500 focus:ring-indigo-500"
+                    >
+                </div>
+                <!-- phone2 -->
+                <div>
+                    <label for="checkout-phone2" class="block text-base font-bold text-gray-800">
+                        Another Phone Number
+                    </label>
+                    <input
+                        type="tel"
+                        id="checkout-phone2"
+                        required
+                        minlength="11"
+                        maxlength="11"
+                        class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg font-semibold text-gray-900 focus:border-indigo-500 focus:ring-indigo-500"
+                    >
+                </div>
+                                <!-- City -->
                     <div>
                         <label for="checkout-district" class="block text-sm font-medium text-gray-700">
                             City
@@ -181,9 +206,18 @@
                             <option value=6>Others</option>
                         </select>
                     </div>
+                    <!-- Shipping Address -->
                     <div>
-                        <label for="checkout-address" class="block text-sm font-medium text-gray-700">Shipping Address</label>
-                        <textarea id="checkout-address" required rows="3" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm p-3 focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                        <label for="checkout-address" class="block text-sm font-medium text-gray-700">
+                            Shipping Address
+                        </label>
+
+                        <textarea
+                            id="checkout-address"
+                            required
+                            rows="3"
+                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm p-3 text-lg font-semibold text-gray-900 focus:border-indigo-500 focus:ring-indigo-500"
+                        ></textarea>
                     </div>
                 </div>
 
