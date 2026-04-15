@@ -114,3 +114,5 @@ window.addEventListener('popstate', (event) => {
     }
 });
 
+document.getElementById('checkout-district').addEventListener('change', renderTotal);
+

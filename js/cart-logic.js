@@ -7,6 +7,7 @@ let cart = [];
 // stagedCart: The temporary list of items waiting for confirmation via the header icon click
 let stagedCart = []; 
 
+
 /**
  * Calculates the total number of items (quantities combined) in the STAGED cart
  * and updates the header badge.
@@ -90,7 +91,7 @@ function handleAddToCart(productId) {
         }
         
         updateStagedCountDisplay();
-        
+        renderTotal(); // 🔥 ADD THIS
         // Reset quantity to 1 after adding, if the input exists
         if (quantityInput) quantityInput.value = 1;
         if(isArabic())
@@ -215,8 +216,11 @@ function renderStagedCartItems() {
                         </div>
                     </div>
                     
-                    <div class="flex items-center space-x-3">
-                        <span class="text-lg font-bold text-indigo-700">${(item.price * item.quantity).toFixed(2)} L.E</span>
+                        <div class="flex flex-col items-start">
+                            <span class="text-lg font-bold text-indigo-700">
+                                ${(item.price * item.quantity).toFixed(2)} L.E
+                            </span>
+                        </div>
                         <button type="button" 
                                 onclick="removeFromStagedCart(${item.id})" 
                                 class="text-red-500 hover:text-red-700 transition" 
@@ -234,8 +238,6 @@ function renderStagedCartItems() {
         placeOrderButton.classList.remove('opacity-50', 'cursor-not-allowed');
     }
 
-    // Update the final total display
-    totalSpan.textContent = `${total.toFixed(2)} L.E`;
 }
 
 
@@ -279,8 +281,43 @@ function changeQuantity(productId, delta) {
     }
 }
 
+
+
+/* Here we have everything that is regarding the amount of the cart */
 function getStagedCartTotal() {
-    return stagedCart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const customerDistrict = document.getElementById('checkout-district').value;
+    console.log(customerDistrict);
+    const subtotal = stagedCart.reduce((total, item) => {
+        return total + (item.price * item.quantity);
+    }, 0);
+
+    const shippingFees = [
+        0, // no city
+        65, // Cairo / Giza
+        70, // Alex
+        85, // Gharbeya
+        85, // Sharqia
+        85, // Dakahlya
+        100, // Others
+
+    ];
+
+    const shippingFee = subtotal > 3000 ? 0 : (shippingFees[customerDistrict] ?? 0);
+
+    document.getElementById('deliveryFeeText').textContent =
+        `Delivery Service: ${shippingFee} L.E`;
+    
+    console.log(customerDistrict);
+
+    return subtotal + shippingFee;
+}
+
+/* That is rendering the amount of the cart in run time to detect any changes */
+function renderTotal() {
+    console.trace("renderTotal called");
+    
+    document.getElementById('totalAmount').textContent =
+        "\u00A0" + getStagedCartTotal().toFixed(2) + " L.E";
 }
 
 // --- 2. ALERT MESSAGE SYSTEM (Placeholder) ---
@@ -315,12 +352,11 @@ function alertMessage(message, type = 'info') {
  * Opens the checkout modal and populates it with the current cart total.
  * @param {number} total - The calculated total cost.
  */
-function openOrderModal(total) {
+function openOrderModal() {
     const modal = document.getElementById('order-modal-overlay');
     const totalSpan = document.getElementById('modal-total-cost');
 
     if (modal && totalSpan) {
-        totalSpan.textContent = `${total.toFixed(2)} L.E`;
         modal.classList.add('active');
         document.body.classList.add('modal-open');
     }
@@ -357,8 +393,7 @@ function openCheckoutModalIfCartIsReady() {
     // Render the items list before showing the modal
     renderStagedCartItems(); 
 
-    const total = getStagedCartTotal();
-    openOrderModal(total);
+    openOrderModal();
 }
 
 /* --- ---------------------- 4. ORDER FORM SUBMISSION --------------------------------------------------*/
@@ -420,7 +455,8 @@ async function placeOrder(e) {
     const customerPhone1 = document.getElementById('checkout-phone1').value;
     const customerPhone2 = document.getElementById('checkout-phone2').value;
     const customerAddress = document.getElementById('checkout-address').value;
-    
+
+
     // Generate a unique ID (NOTE: Using .toISOString() for better database compatibility if using 'text')
     // Keep your original usage (new Date(Date.now())) but remember it must match the DB column type (text/varchar is safer).
     const uniqueOrderId = new Date(Date.now());
@@ -513,6 +549,7 @@ function removeFromStagedCart(productId) {
     // Re-render the cart list and update the total/button state
     renderStagedCartItems(); 
     
+    renderTotal();
     // Use a generic message or find the name before filtering
     if (removedItem) {
         const message = isArabic() ? `تمت إزالة ${removedItem.name}` : `Removed ${removedItem.name}`;
